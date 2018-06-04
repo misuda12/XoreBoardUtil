@@ -53,11 +53,12 @@ public interface Sidebar {
     java.util.HashMap<String, Integer> getLines();
 
     /**
-     * public void rewriteLine(@org.jetbrains.annotations.NotNull String lineKey)
+     * public void rewriteLine(@org.jetbrains.annotations.NotNull String lineKey, int value)
      * @param lineKey String {@link String}
+     * @param value int {@link Integer}
      */
 
-    public void rewriteLine(@org.jetbrains.annotations.NotNull String lineKey);
+    public void rewriteLine(@org.jetbrains.annotations.NotNull String lineKey, int value);
 
     /**
      * void rewriteLines(java.util.HashMap<String, Integer> lineKeys)
@@ -92,5 +93,12 @@ public interface Sidebar {
      */
 
     void setShowedSidebar(boolean statement);
+
+    /**
+     * SidebarType getType()
+     * @return SidebarType
+     */
+
+    SidebarType getType();
 
 }

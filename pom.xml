@@ -24,7 +24,7 @@
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <configuration>
-                    <altDeploymentRepository>internal.repo::default::file://${project.basedir}/../${project.name}-mvn-repo</altDeploymentRepository>
+                    <altDeploymentRepository>internal.repo::default::file://${project.basedir}/../XoreBoardUtil/maven</altDeploymentRepository>
                 </configuration>
             </plugin>
         </plugins>
