@@ -17,7 +17,7 @@ public class XoreBoardPlayerSidebar implements Sidebar {
     private String displayName;
     private ConcurrentHashMap<String, Integer> lineKeys = new ConcurrentHashMap<String, Integer>();
 
-    XoreBoardPlayerSidebar(XoreBoard xoreboard, @NotNull org.bukkit.entity.Player player) {
+    XoreBoardPlayerSidebar(@NotNull XoreBoard xoreboard, @NotNull org.bukkit.entity.Player player) {
         this.xoreBoard = xoreboard;
         this.player = player;
     }
