@@ -9,9 +9,16 @@ import java.util.HashMap;
 @Getter
 public class XoreBoardPlayerSidebar implements Sidebar {
 
+    private String displayName;
+
+    @Override
+    public String getDisplayName() {
+        return this.displayName;
+    }
+
     @Override
     public void setDisplayName(@NotNull String displayName) {
-
+        this.displayName = displayName;
     }
 
     @Override
