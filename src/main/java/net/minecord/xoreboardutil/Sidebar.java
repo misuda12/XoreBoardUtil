@@ -1,9 +1,17 @@
-package net.minecord.xoreboardutil.bukkit;
+package net.minecord.xoreboardutil;
 
 import lombok.Getter;
 
 @Getter
 public interface Sidebar {
+
+    /**
+     * String getDisplayName()
+     * @return String
+     */
+
+    @org.jetbrains.annotations.Contract(pure = true)
+    String getDisplayName();
 
     /**
      * void setDisplayName(@org.jetbrains.annotations.NotNull String displayName)
@@ -41,7 +49,15 @@ public interface Sidebar {
      * @return java.util.HashMap
      */
 
+    @org.jetbrains.annotations.Contract(pure = true)
     java.util.HashMap<String, Integer> getLines();
+
+    /**
+     * public void rewriteLine(@org.jetbrains.annotations.NotNull String lineKey)
+     * @param lineKey String {@link String}
+     */
+
+    public void rewriteLine(@org.jetbrains.annotations.NotNull String lineKey);
 
     /**
      * void rewriteLines(java.util.HashMap<String, Integer> lineKeys)

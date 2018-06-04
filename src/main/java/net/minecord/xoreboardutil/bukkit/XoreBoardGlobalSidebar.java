@@ -1,8 +1,79 @@
 package net.minecord.xoreboardutil.bukkit;
 
 import lombok.Getter;
+import net.minecord.xoreboardutil.Sidebar;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
-public class XoreBoardGlobalSidebar {
+public class XoreBoardGlobalSidebar implements Sidebar {
 
-}
+    private String displayName;
+    private ConcurrentHashMap<String, Integer> lineKeys = new ConcurrentHashMap<String, Integer>();
+
+    @Override
+    public String getDisplayName() {
+        return this.displayName;
+    }
+
+    @Override
+    public void setDisplayName(@NotNull String displayName) {
+        this.displayName = displayName;
+    }
+
+    @Override
+    public void putLine(@NotNull String lineKey, int value) {
+
+    }
+
+    @Override
+    public void setLines(HashMap<String, Integer> lineKeys) {
+
+    }
+
+    @Override
+    public HashMap<String, Integer> getLines() {
+        return new HashMap<String, Integer>(this.lineKeys);
+    }
+
+    @Override
+    public void rewriteLine(@NotNull String lineKey) {
+
+    }
+
+    @Override
+    public void rewriteLines(HashMap<String, Integer> lineKeys) {
+
+    }
+
+    @Override
+    public void clearLine(@NotNull String lineKey) {
+
+    }
+
+    @Override
+    public void clearLines() {
+
+    }
+
+    @Override
+    public void hideSidebar() {
+
+    }
+
+    @Override
+    public void showSidebar() {
+
+    }
+
+    @Override
+    public boolean isShowed() {
+        return false;
+    }
+
+    @Override
+    public void setShowedSidebar(boolean statement) {
+
+}}
