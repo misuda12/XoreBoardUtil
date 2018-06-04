@@ -1,7 +1,9 @@
 package net.minecord.xoreboardutil.bukkit;
 
+import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class BukkitXoreBoardUtil extends JavaPlugin {
+@Getter
+public class XoreBoardUtil extends JavaPlugin {
 
 }
