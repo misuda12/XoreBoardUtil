@@ -21,11 +21,27 @@ public interface Sidebar {
     void putLine(@org.jetbrains.annotations.NotNull String lineKey, int value);
 
     /**
+     * default void putLines(java.util.HashMap<String, Integer> lineKeys)
+     * @param lineKeys HashMap {@link java.util.HashMap}
+     */
+
+    default void putLines(java.util.HashMap<String, Integer> lineKeys) {
+        setLines(lineKeys);
+    }
+
+    /**
      * void putLines(java.util.HashMap<String, Integer> lineKeys)
      * @param lineKeys HashMap {@link java.util.HashMap}
      */
 
-    void putLines(java.util.HashMap<String, Integer> lineKeys);
+    void setLines(java.util.HashMap<String, Integer> lineKeys);
+
+    /**
+     * java.util.HashMap<String, Integer> getLines()
+     * @return java.util.HashMap
+     */
+
+    java.util.HashMap<String, Integer> getLines();
 
     /**
      * void rewriteLines(java.util.HashMap<String, Integer> lineKeys)
