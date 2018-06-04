@@ -11,9 +11,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @Getter
 public class XoreBoardPlayerSidebar implements Sidebar {
 
-    private final org.bukkit.entity.Player player;
+    private @NotNull final org.bukkit.entity.Player player;
 
-    private XoreBoard xoreBoard;
+    private @NotNull XoreBoard xoreBoard;
     private String displayName;
     private ConcurrentHashMap<String, Integer> lineKeys = new ConcurrentHashMap<String, Integer>();
 
@@ -27,6 +27,7 @@ public class XoreBoardPlayerSidebar implements Sidebar {
      * @return XoreBoard
      */
 
+    @NotNull
     public XoreBoard getXoreBoard() {
         return this.xoreBoard;
     }
@@ -36,6 +37,7 @@ public class XoreBoardPlayerSidebar implements Sidebar {
      * @return Player
      */
 
+    @NotNull
     public final Player getPlayer() {
         return this.player;
     }
