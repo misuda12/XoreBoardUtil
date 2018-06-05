@@ -2,6 +2,7 @@ package net.minecord.xoreboardutil.bukkit;
 
 import lombok.Getter;
 import net.minecord.xoreboardutil.Sidebar;
+import net.minecord.xoreboardutil.SidebarType;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -9,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 
 @Getter
 public class XoreBoard {
@@ -114,16 +116,6 @@ public class XoreBoard {
     }
 
     /**
-     * public Collection<org.bukkit.entity.Player> getPlayers()
-     * @return Collection<org.bukkit.entity.Player>
-     */
-
-    @org.jetbrains.annotations.Contract(pure = true)
-    public Collection<org.bukkit.entity.Player> getPlayers() {
-        return this.sidebars.keySet();
-    }
-
-    /**
      * public HashMap<org.bukkit.entity.Player, Sidebar> getSidebars()
      * @return HashMap<org.bukkit.entity.Player, Sidebar>
      */
@@ -131,6 +123,16 @@ public class XoreBoard {
     @org.jetbrains.annotations.Contract(pure = true)
     public HashMap<org.bukkit.entity.Player, Sidebar> getSidebars() {
         return new HashMap<>(this.sidebars);
+    }
+
+    /**
+     * public Collection<org.bukkit.entity.Player> getPlayers()
+     * @return Collection<org.bukkit.entity.Player>
+     */
+
+    @org.jetbrains.annotations.Contract(pure = true)
+    public Collection<org.bukkit.entity.Player> getPlayers() {
+        return this.sidebars.keySet();
     }
 
     public void destroy() {
