@@ -10,9 +10,9 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
-public class XoreBoardPlayerSidebar implements Sidebar {
+public class XoreBoardPrivateSidebar implements Sidebar {
 
-    private @NotNull final org.bukkit.entity.Player player;
+    private @NotNull final XorePlayer xorePlayer;
 
     private @NotNull XoreBoard xoreBoard;
     private String displayName;
@@ -20,9 +20,11 @@ public class XoreBoardPlayerSidebar implements Sidebar {
 
     private boolean showedStatus, showedGlobalStatus = false;
 
-    XoreBoardPlayerSidebar(@NotNull XoreBoard xoreboard, @NotNull org.bukkit.entity.Player player) {
+    XoreBoardPrivateSidebar(@NotNull XoreBoard xoreboard, @NotNull XorePlayer xorePlayer) {
         this.xoreBoard = xoreboard;
-        this.player = player;
+        this.xorePlayer = xorePlayer;
+
+        this.xorePlayer.
     }
 
     /**
@@ -42,7 +44,17 @@ public class XoreBoardPlayerSidebar implements Sidebar {
 
     @NotNull
     public final Player getPlayer() {
-        return this.player;
+        return this.xorePlayer.getPlayer();
+    }
+
+    /**
+     *public final XorePlayer getXorePlayer()
+     * @return XorePlayer
+     */
+
+    @NotNull
+    public final XorePlayer getXorePlayer() {
+        return this.xorePlayer;
     }
 
     @Override

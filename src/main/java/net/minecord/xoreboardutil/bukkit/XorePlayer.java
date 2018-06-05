@@ -1,35 +1,59 @@
 package net.minecord.xoreboardutil.bukkit;
 
 import lombok.Getter;
-import net.minecord.xoreboardutil.Sidebar;
+
 import org.jetbrains.annotations.NotNull;
 
 @Getter
 public class XorePlayer {
 
+    private @NotNull final XoreBoard xoreBoard;
     private @NotNull final org.bukkit.entity.Player player;
-    private Sidebar sidebar;
 
-    XorePlayer(@NotNull org.bukkit.entity.Player player) {
+    private XoreBoardPrivateSidebar privateSidebar;
+
+    private boolean sharedSidebar = false;
+
+    XorePlayer(@NotNull XoreBoard xoreBoard, @NotNull org.bukkit.entity.Player player) {
+        this.xoreBoard = xoreBoard;
         this.player = player;
     }
 
     /**
-     * public Sidebar getSidebar()
-     * @return Sidebar
+     * public XoreBoardPrivateSidebar getPrivateSidebar()
+     * @return XoreBoardPrivateSidebar
      */
 
-    public Sidebar getSidebar() {
-        return this.sidebar;
+    public XoreBoardPrivateSidebar getPrivateSidebar() {
+        return this.privateSidebar;
     }
 
     /**
-     * public void setSidebar(@NotNull Sidebar sidebar)
-     * @param sidebar Sidebar
+     * public void setPrivateSidebar(@NotNull XoreBoardPrivateSidebar privateSidebar)
+     * @param privateSidebar XoreBoardPrivateSidebar {@link XoreBoardPrivateSidebar {@value privateSidebar}}
      */
 
-    public void setSidebar(@NotNull Sidebar sidebar) {
-        this.sidebar = sidebar;
+    public void setPrivateSidebar(@NotNull XoreBoardPrivateSidebar privateSidebar) {
+        this.privateSidebar = privateSidebar;
+    }
+
+    /**
+     * public boolean hasSharedSidebar()
+     * @return boolean
+     */
+
+    public boolean hasSharedSidebar() {
+        return this.sharedSidebar;
+    }
+
+    /**
+     * public XoreBoard getXoreBoard()
+     * @return XoreBoard
+     */
+
+    @NotNull
+    public XoreBoard getXoreBoard() {
+        return this.xoreBoard;
     }
 
     /**

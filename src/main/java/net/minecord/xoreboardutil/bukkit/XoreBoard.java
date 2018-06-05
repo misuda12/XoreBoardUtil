@@ -19,7 +19,7 @@ public class XoreBoard {
     private HashMap<XorePlayer, Sidebar> sidebars = new HashMap<XorePlayer, Sidebar>();
 
     @Nullable
-    private XoreBoardGlobalSidebar globalSidebar;
+    private XoreBoardSharedSidebar globalSidebar;
 
     XoreBoard(Scoreboard scoreboard, @NotNull String ID, @NotNull String name) {
         this.scoreboard = scoreboard;
@@ -74,10 +74,10 @@ public class XoreBoard {
 
     public void addPlayer(@NotNull org.bukkit.entity.Player player) {
         if(player.isOnline() == false) return;
-        XorePlayer xorePlayer = XoreBoardUtil.getPlugin(XoreBoardUtil.class).getPlayer(player);
+        final XorePlayer xorePlayer = new XorePlayer(this, player);
         xorePlayer.getPlayer().setScoreboard(this.scoreboard);
 
-        this.sidebars.put(xorePlayer, new XoreBoardPlayerSidebar(this, xorePlayer));
+        this.sidebars.put(xorePlayer, new XoreBoardPrivateSidebar(this, xorePlayer));
     }
 
     /**
@@ -90,28 +90,28 @@ public class XoreBoard {
     }
 
     /**
-     * public XoreBoardGlobalSidebar getSidebar()
-     * @return XoreBoardGlobalSidebar
+     * public XoreBoardSharedSidebar getSidebar()
+     * @return XoreBoardSharedSidebar
      */
 
-    public XoreBoardGlobalSidebar getSidebar() {
-        if(this.globalSidebar == null) this.globalSidebar = new XoreBoardGlobalSidebar(this);
+    public XoreBoardSharedSidebar getSidebar() {
+        if(this.globalSidebar == null) this.globalSidebar = new XoreBoardSharedSidebar(this);
         this.sidebars.forEach(((xorePlayer, sidebar) -> {
-            if(((XoreBoardPlayerSidebar) sidebar).isShowedGlobal() == false) this.globalSidebar.showSidebar();
+            if(((XoreBoardPrivateSidebar) sidebar).isShowedGlobal() == false) this.globalSidebar.showSidebar();
         }));
-        return ((XoreBoardGlobalSidebar) this.globalSidebar);
+        return ((XoreBoardSharedSidebar) this.globalSidebar);
     }
 
     /**
-     *public XoreBoardPlayerSidebar getSidebar(@NotNull org.bukkit.entity.Player player)
+     *public XoreBoardPrivateSidebar getSidebar(@NotNull org.bukkit.entity.Player player)
      * @param player Player {@link org.bukkit.entity.Player}
-     * @return XoreBoardPlayerSidebar
+     * @return XoreBoardPrivateSidebar
      */
 
-    public XoreBoardPlayerSidebar getSidebar(@NotNull org.bukkit.entity.Player player) {
+    public XoreBoardPrivateSidebar getSidebar(@NotNull org.bukkit.entity.Player player) {
         if(player.isOnline() == false) return null;
         if(this.sidebars.containsKey(player) == false) addPlayer(player);
-        return ((XoreBoardPlayerSidebar) this.sidebars.get(player));
+        return ((XoreBoardPrivateSidebar) this.sidebars.get(player));
     }
 
     /**

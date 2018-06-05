@@ -9,12 +9,12 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
-public class XoreBoardGlobalSidebar implements Sidebar {
+public class XoreBoardSharedSidebar implements Sidebar {
 
     private String displayName;
     private ConcurrentHashMap<String, Integer> lineKeys = new ConcurrentHashMap<String, Integer>();
 
-    public XoreBoardGlobalSidebar(@NotNull XoreBoard xoreBoard) {
+    public XoreBoardSharedSidebar(@NotNull XoreBoard xoreBoard) {
 
     }
 
