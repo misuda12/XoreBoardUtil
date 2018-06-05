@@ -2,7 +2,6 @@ package net.minecord.xoreboardutil.bukkit;
 
 import lombok.Getter;
 import net.minecord.xoreboardutil.Sidebar;
-import net.minecord.xoreboardutil.SidebarType;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 
 @Getter
 public class XoreBoard {
@@ -18,7 +16,7 @@ public class XoreBoard {
     private final Scoreboard scoreboard;
     private @NotNull String ID, name;
 
-    private HashMap<org.bukkit.entity.Player, Sidebar> sidebars = new HashMap<org.bukkit.entity.Player, Sidebar>();
+    private HashMap<XorePlayer, Sidebar> sidebars = new HashMap<XorePlayer, Sidebar>();
 
     @Nullable
     private XoreBoardGlobalSidebar globalSidebar;
@@ -76,9 +74,10 @@ public class XoreBoard {
 
     public void addPlayer(@NotNull org.bukkit.entity.Player player) {
         if(player.isOnline() == false) return;
-        player.setScoreboard(this.scoreboard);
+        XorePlayer xorePlayer = XoreBoardUtil.getPlugin(XoreBoardUtil.class).getPlayer(player);
+        xorePlayer.getPlayer().setScoreboard(this.scoreboard);
 
-        this.sidebars.put(player, new XoreBoardPlayerSidebar(this, player));
+        this.sidebars.put(xorePlayer, new XoreBoardPlayerSidebar(this, xorePlayer));
     }
 
     /**
@@ -97,7 +96,7 @@ public class XoreBoard {
 
     public XoreBoardGlobalSidebar getSidebar() {
         if(this.globalSidebar == null) this.globalSidebar = new XoreBoardGlobalSidebar(this);
-        this.sidebars.forEach(((player, sidebar) -> {
+        this.sidebars.forEach(((xorePlayer, sidebar) -> {
             if(((XoreBoardPlayerSidebar) sidebar).isShowedGlobal() == false) this.globalSidebar.showSidebar();
         }));
         return ((XoreBoardGlobalSidebar) this.globalSidebar);
