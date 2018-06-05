@@ -1,13 +1,14 @@
 package net.minecord.xoreboardutil.bukkit;
 
 import lombok.Getter;
+import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.HashMap;
 
 @Getter
 public class XoreBoard {
@@ -15,7 +16,7 @@ public class XoreBoard {
     private final Scoreboard scoreboard;
     private @NotNull String ID, name;
 
-    private HashSet<XorePlayer> xorePlayers = new HashSet<XorePlayer>();
+    private HashMap<org.bukkit.entity.Player, XorePlayer> xorePlayers = new HashMap<org.bukkit.entity.Player, XorePlayer>();
 
     @Nullable
     private XoreBoardSharedSidebar sharedSidebar;
@@ -73,18 +74,12 @@ public class XoreBoard {
 
     public void addPlayer(@NotNull org.bukkit.entity.Player player) {
         if(player.isOnline() == false) return;
-        getPlayers().forEach(xorePlayer -> {
-            if(xorePlayer.getPlayer() == player) {
-                getSharedSidebar().hideSidebar(xorePlayer);
-                xorePlayer.getPrivateSidebar().hideSidebar();
-
-                getPlayers().remove(xorePlayer);
-        }});
+        if(this.xorePlayers.containsKey(player)) return;
 
         final XorePlayer xorePlayer = new XorePlayer(this, player);
-        xorePlayer.getPlayer().setScoreboard(this.scoreboard);
+        player.setScoreboard(this.scoreboard);
 
-        this.xorePlayers.add(xorePlayer);
+        this.xorePlayers.put(player, xorePlayer);
     }
 
     /**
@@ -94,14 +89,11 @@ public class XoreBoard {
 
     public void removePlayer(@NotNull org.bukkit.entity.Player player) {
         if(player.isOnline() == false) return;
-        getPlayers().forEach(xorePlayer -> {
-            if(xorePlayer.getPlayer() == player) {
-                getSharedSidebar().hideSidebar(xorePlayer);
-                xorePlayer.getPrivateSidebar().hideSidebar();
+        if(this.xorePlayers.containsKey(player)) {
+            final XorePlayer xorePlayer = this.xorePlayers.get(player);
 
-                    getPlayers().remove(xorePlayer);
-        }});
-    }
+                getSharedSidebar().hideSidebar(xorePlayer);
+    }}
 
     /**
      * public XoreBoardSharedSidebar getSidebar()
@@ -110,25 +102,35 @@ public class XoreBoard {
 
     public XoreBoardSharedSidebar getSharedSidebar() {
         if(this.sharedSidebar == null) this.sharedSidebar = new XoreBoardSharedSidebar(this);
-        this.xorePlayers.forEach((xorePlayer-> {
+        this.xorePlayers.forEach((player, xorePlayer) -> {
             if((xorePlayer.hasSharedSidebar() == false)) this.sharedSidebar.showSidebar();
-        }));
+        });
         return ((XoreBoardSharedSidebar) this.sharedSidebar);
     }
 
     /**
-     * public Collection<XorePlayer> getPlayers()
-     * @return Collection<XorePlayer>
+     * public Collection<org.bukkit.entity.Player> getPlayers()
+     * @return Collection<org.bukkit.entity.Player>
      */
 
     @org.jetbrains.annotations.Contract(pure = true)
-    public Collection<XorePlayer> getPlayers() {
+    public Collection<org.bukkit.entity.Player> getPlayers() {
+        return this.xorePlayers.keySet();
+    }
+
+    /**
+     * public HashMap<org.bukkit.entity.Player, XorePlayer> getEntries()
+     * @return HashMap<org.bukkit.entity.Player, XorePlayer>
+     */
+
+    @org.jetbrains.annotations.Contract(pure = true)
+    public HashMap<org.bukkit.entity.Player, XorePlayer> getEntries() {
         return this.xorePlayers;
     }
 
     public void destroy() {
         getSharedSidebar().clearLines();
             getSharedSidebar().hideSidebar();
-        java.util.List<XorePlayer> temporary = new ArrayList<XorePlayer>(getPlayers());
-        temporary.forEach(xorePlayer -> removePlayer(xorePlayer.getPlayer()));
+        java.util.List<org.bukkit.entity.Player> temporary = new ArrayList<org.bukkit.entity.Player>(getPlayers());
+        temporary.forEach(this::removePlayer);
 }}
