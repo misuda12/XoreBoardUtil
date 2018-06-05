@@ -1,14 +1,12 @@
 package net.minecord.xoreboardutil.bukkit;
 
 import lombok.Getter;
-import net.minecord.xoreboardutil.Sidebar;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 
 @Getter
