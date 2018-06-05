@@ -1,7 +1,6 @@
 package net.minecord.xoreboardutil.bukkit;
 
 import lombok.Getter;
-import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
