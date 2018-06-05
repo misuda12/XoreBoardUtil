@@ -18,13 +18,11 @@ public class XoreBoardPrivateSidebar implements Sidebar {
     private String displayName;
     private ConcurrentHashMap<String, Integer> lineKeys = new ConcurrentHashMap<String, Integer>();
 
-    private boolean showedStatus, showedGlobalStatus = false;
+    private boolean showedStatus = false;
 
     XoreBoardPrivateSidebar(@NotNull XoreBoard xoreboard, @NotNull XorePlayer xorePlayer) {
         this.xoreBoard = xoreboard;
         this.xorePlayer = xorePlayer;
-
-        this.xorePlayer.
     }
 
     /**
