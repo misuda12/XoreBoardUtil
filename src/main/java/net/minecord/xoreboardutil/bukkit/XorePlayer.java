@@ -17,6 +17,8 @@ public class XorePlayer {
     XorePlayer(@NotNull XoreBoard xoreBoard, @NotNull org.bukkit.entity.Player player) {
         this.xoreBoard = xoreBoard;
         this.player = player;
+
+        if(this.privateSidebar == null) this.privateSidebar = new XoreBoardPrivateSidebar(getXoreBoard(), this);
     }
 
     /**
@@ -24,6 +26,7 @@ public class XorePlayer {
      * @return XoreBoardPrivateSidebar
      */
 
+    @NotNull
     public XoreBoardPrivateSidebar getPrivateSidebar() {
         return this.privateSidebar;
     }
