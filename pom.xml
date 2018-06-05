@@ -73,12 +73,6 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
 
-        <!-- Bungee Repository -->
-        <repository>
-            <id>bungeecord-repo</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </repository>
-
         <!-- Sponge Repository -->
         <repository>
             <id>sponge-repo</id>
@@ -121,24 +115,6 @@
             <artifactId>craftbukkit</artifactId>
             <version>1.12-R0.1-SNAPSHOT</version>
             <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- Bungee API -->
-        <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
-            <version>1.12-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- Bungee API - JavaDoc -->
-        <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
-            <version>1.12-SNAPSHOT</version>
-            <type>javadoc</type>
             <scope>provided</scope>
         </dependency>
 
