@@ -140,9 +140,6 @@ public class XoreBoardPrivateSidebar implements Sidebar {
         return getPlayer().isOnline() && this.showedStatus;
     }
 
-    public boolean isShowedGlobal() {
-        return getPlayer().isOnline() && this.showedGlobalStatus;
-    }
 
     @Override
     public void setShowedSidebar(boolean showedStatus) {
@@ -151,18 +148,7 @@ public class XoreBoardPrivateSidebar implements Sidebar {
         this.showedStatus = showedStatus;
     }
 
-    /**
-     * public void setShowedGlobalSidebar(boolean showedGlobalStatus)
-     * @param showedGlobalStatus boolean {@link Boolean {@value showedGlobalStatus}}
-     */
-
-    public void setShowedGlobalSidebar(boolean showedGlobalStatus) {
-        if(getPlayer().isOnline() == false) return;
-
-        this.showedGlobalStatus = showedGlobalStatus;
-    }
-
     @Override
     public SidebarType getType() {
-        return SidebarType.PLAYER;
+        return SidebarType.PRIVATE;
 }}

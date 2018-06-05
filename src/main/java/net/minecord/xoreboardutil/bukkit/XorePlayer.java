@@ -47,12 +47,12 @@ public class XorePlayer {
     }
 
     /**
-     * public XoreBoard getXoreBoard()
+     * public final XoreBoard getXoreBoard()
      * @return XoreBoard
      */
 
     @NotNull
-    public XoreBoard getXoreBoard() {
+    public final XoreBoard getXoreBoard() {
         return this.xoreBoard;
     }
 

@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 
 @Getter
 public class XoreBoard {
@@ -16,10 +17,10 @@ public class XoreBoard {
     private final Scoreboard scoreboard;
     private @NotNull String ID, name;
 
-    private HashMap<XorePlayer, Sidebar> sidebars = new HashMap<XorePlayer, Sidebar>();
+    private HashSet<XorePlayer> xorePlayers = new HashSet<XorePlayer>();
 
     @Nullable
-    private XoreBoardSharedSidebar globalSidebar;
+    private XoreBoardSharedSidebar sharedSidebar;
 
     XoreBoard(Scoreboard scoreboard, @NotNull String ID, @NotNull String name) {
         this.scoreboard = scoreboard;
@@ -74,10 +75,18 @@ public class XoreBoard {
 
     public void addPlayer(@NotNull org.bukkit.entity.Player player) {
         if(player.isOnline() == false) return;
+        getPlayers().forEach(xorePlayer -> {
+            if(xorePlayer.getPlayer() == player) {
+                getSharedSidebar().hideSidebar(xorePlayer);
+                xorePlayer.getPrivateSidebar().hideSidebar();
+
+                getPlayers().remove(xorePlayer);
+        }});
+
         final XorePlayer xorePlayer = new XorePlayer(this, player);
         xorePlayer.getPlayer().setScoreboard(this.scoreboard);
 
-        this.sidebars.put(xorePlayer, new XoreBoardPrivateSidebar(this, xorePlayer));
+        this.xorePlayers.add(xorePlayer);
     }
 
     /**
@@ -86,7 +95,14 @@ public class XoreBoard {
      */
 
     public void removePlayer(@NotNull org.bukkit.entity.Player player) {
+        if(player.isOnline() == false) return;
+        getPlayers().forEach(xorePlayer -> {
+            if(xorePlayer.getPlayer() == player) {
+                getSharedSidebar().hideSidebar(xorePlayer);
+                xorePlayer.getPrivateSidebar().hideSidebar();
 
+                    getPlayers().remove(xorePlayer);
+        }});
     }
 
     /**
@@ -94,49 +110,27 @@ public class XoreBoard {
      * @return XoreBoardSharedSidebar
      */
 
-    public XoreBoardSharedSidebar getSidebar() {
-        if(this.globalSidebar == null) this.globalSidebar = new XoreBoardSharedSidebar(this);
-        this.sidebars.forEach(((xorePlayer, sidebar) -> {
-            if(((XoreBoardPrivateSidebar) sidebar).isShowedGlobal() == false) this.globalSidebar.showSidebar();
+    public XoreBoardSharedSidebar getSharedSidebar() {
+        if(this.sharedSidebar == null) this.sharedSidebar = new XoreBoardSharedSidebar(this);
+        this.xorePlayers.forEach((xorePlayer-> {
+            if((xorePlayer.hasSharedSidebar() == false)) this.sharedSidebar.showSidebar();
         }));
-        return ((XoreBoardSharedSidebar) this.globalSidebar);
+        return ((XoreBoardSharedSidebar) this.sharedSidebar);
     }
 
     /**
-     *public XoreBoardPrivateSidebar getSidebar(@NotNull org.bukkit.entity.Player player)
-     * @param player Player {@link org.bukkit.entity.Player}
-     * @return XoreBoardPrivateSidebar
-     */
-
-    public XoreBoardPrivateSidebar getSidebar(@NotNull org.bukkit.entity.Player player) {
-        if(player.isOnline() == false) return null;
-        if(this.sidebars.containsKey(player) == false) addPlayer(player);
-        return ((XoreBoardPrivateSidebar) this.sidebars.get(player));
-    }
-
-    /**
-     * public HashMap<org.bukkit.entity.Player, Sidebar> getSidebars()
-     * @return HashMap<org.bukkit.entity.Player, Sidebar>
+     * public Collection<XorePlayer> getPlayers()
+     * @return Collection<XorePlayer>
      */
 
     @org.jetbrains.annotations.Contract(pure = true)
-    public HashMap<org.bukkit.entity.Player, Sidebar> getSidebars() {
-        return new HashMap<>(this.sidebars);
-    }
-
-    /**
-     * public Collection<org.bukkit.entity.Player> getPlayers()
-     * @return Collection<org.bukkit.entity.Player>
-     */
-
-    @org.jetbrains.annotations.Contract(pure = true)
-    public Collection<org.bukkit.entity.Player> getPlayers() {
-        return this.sidebars.keySet();
+    public Collection<XorePlayer> getPlayers() {
+        return this.xorePlayers;
     }
 
     public void destroy() {
-        getSidebar().clearLines();
-            getSidebar().hideSidebar();
-        java.util.List<org.bukkit.entity.Player> temporary = new ArrayList<org.bukkit.entity.Player>(getPlayers());
-        temporary.forEach(this::removePlayer);
+        getSharedSidebar().clearLines();
+            getSharedSidebar().hideSidebar();
+        java.util.List<XorePlayer> temporary = new ArrayList<XorePlayer>(getPlayers());
+        temporary.forEach(xorePlayer -> removePlayer(xorePlayer.getPlayer()));
 }}
