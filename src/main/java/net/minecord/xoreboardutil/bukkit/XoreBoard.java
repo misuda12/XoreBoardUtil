@@ -1,6 +1,7 @@
 package net.minecord.xoreboardutil.bukkit;
 
 import lombok.Getter;
+import net.minecord.xoreboardutil.bukkit.event.XoreBoardCreateEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,6 +24,9 @@ public class XoreBoard {
         this.scoreboard = scoreboard;
         this.ID = ID;
         this.name = name;
+
+        final XoreBoardCreateEvent xoreBoardCreateEvent = new XoreBoardCreateEvent(this);
+            XoreBoardUtil.getPlugin(XoreBoardUtil.class).getServer().getPluginManager().callEvent(xoreBoardCreateEvent);
     }
 
     /**
