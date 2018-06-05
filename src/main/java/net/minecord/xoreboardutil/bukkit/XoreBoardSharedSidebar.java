@@ -68,6 +68,10 @@ public class XoreBoardSharedSidebar implements Sidebar {
 
     }
 
+    public void hideSidebar(@NotNull XorePlayer xorePlayer) {
+
+    }
+
     @Override
     public void showSidebar() {
 
