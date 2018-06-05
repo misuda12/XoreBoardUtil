@@ -1,7 +1,6 @@
 package net.minecord.xoreboardutil.bukkit;
 
 import lombok.Getter;
-import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,7 +11,7 @@ import java.util.HashMap;
 @Getter
 public class XoreBoard {
 
-    private final Scoreboard scoreboard;
+    private final org.bukkit.scoreboard.Scoreboard scoreboard;
     private @NotNull String ID, name;
 
     private HashMap<org.bukkit.entity.Player, XorePlayer> xorePlayers = new HashMap<org.bukkit.entity.Player, XorePlayer>();
@@ -20,18 +19,18 @@ public class XoreBoard {
     @Nullable
     private XoreBoardSharedSidebar sharedSidebar;
 
-    XoreBoard(Scoreboard scoreboard, @NotNull String ID, @NotNull String name) {
+    XoreBoard(org.bukkit.scoreboard.Scoreboard scoreboard, @NotNull String ID, @NotNull String name) {
         this.scoreboard = scoreboard;
         this.ID = ID;
         this.name = name;
     }
 
     /**
-     * public final Scoreboard getScoreboard()
+     * public final org.bukkit.scoreboard.Scoreboard getScoreboard()
      * @return Scoreboard
      */
 
-    public final Scoreboard getScoreboard() {
+    public final org.bukkit.scoreboard.Scoreboard getScoreboard() {
         return this.scoreboard;
     }
 
