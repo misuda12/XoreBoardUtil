@@ -111,16 +111,6 @@ public class XoreBoard {
     }
 
     /**
-     * public Collection<XorePlayer> getXorePlayers()
-     * @return Collection<XorePlayer>
-     */
-
-    @org.jetbrains.annotations.Contract(pure = true)
-    public Collection<XorePlayer> getXorePlayers() {
-        return this.xorePlayers.values();
-    }
-
-    /**
      * public Collection<org.bukkit.entity.Player> getPlayers()
      * @return Collection<org.bukkit.entity.Player>
      */
@@ -128,6 +118,16 @@ public class XoreBoard {
     @org.jetbrains.annotations.Contract(pure = true)
     public Collection<org.bukkit.entity.Player> getPlayers() {
         return this.xorePlayers.keySet();
+    }
+
+    /**
+     * public Collection<XorePlayer> getXorePlayers()
+     * @return Collection<XorePlayer>
+     */
+
+    @org.jetbrains.annotations.Contract(pure = true)
+    public Collection<XorePlayer> getXorePlayers() {
+        return this.xorePlayers.values();
     }
 
     /**
