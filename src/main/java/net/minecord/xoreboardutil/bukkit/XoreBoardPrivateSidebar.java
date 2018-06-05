@@ -3,7 +3,6 @@ package net.minecord.xoreboardutil.bukkit;
 import lombok.Getter;
 import net.minecord.xoreboardutil.Sidebar;
 import net.minecord.xoreboardutil.SidebarType;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -36,16 +35,6 @@ public class XoreBoardPrivateSidebar implements Sidebar {
     }
 
     /**
-     * public final Player getPlayer()
-     * @return Player
-     */
-
-    @NotNull
-    public final Player getPlayer() {
-        return this.xorePlayer.getPlayer();
-    }
-
-    /**
      *public final XorePlayer getXorePlayer()
      * @return XorePlayer
      */
@@ -62,7 +51,7 @@ public class XoreBoardPrivateSidebar implements Sidebar {
 
     @Override
     public void setDisplayName(@NotNull String displayName) {
-        if(getPlayer().isOnline() == false) return;
+        if(getXorePlayer().getPlayer().isOnline() == false) return;
         String tempDisplayName = org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName);
         if(getDisplayName().equals(tempDisplayName)) return;
         if(displayName.length() > 32) {
@@ -76,7 +65,7 @@ public class XoreBoardPrivateSidebar implements Sidebar {
 
     @Override
     public void putLine(@NotNull String lineKey, int value) {
-        if(getPlayer().isOnline() == false) return;
+        if(getXorePlayer().getPlayer().isOnline() == false) return;
 
         // Packet
 
@@ -85,7 +74,7 @@ public class XoreBoardPrivateSidebar implements Sidebar {
 
     @Override
     public void setLines(HashMap<String, Integer> lineKeys) {
-        if(getPlayer().isOnline() == false) return;
+        if(getXorePlayer().getPlayer().isOnline() == false) return;
         this.lineKeys.forEach((lineKey, value) -> {
             if(lineKeys.containsKey(lineKey) && lineKeys.get(lineKey).equals(value)) lineKeys.remove(lineKey);
         });
@@ -102,7 +91,7 @@ public class XoreBoardPrivateSidebar implements Sidebar {
 
     @Override
     public void rewriteLine(@NotNull String lineKey, int value) {
-        if(getPlayer().isOnline() == false) return;
+        if(getXorePlayer().getPlayer().isOnline() == false) return;
         if(this.lineKeys.containsKey(lineKey)) {
 
         } else putLine(lineKey, value);
@@ -110,38 +99,38 @@ public class XoreBoardPrivateSidebar implements Sidebar {
 
     @Override
     public void rewriteLines(HashMap<String, Integer> lineKeys) {
-        if(getPlayer().isOnline() == false) return;
+        if(getXorePlayer().getPlayer().isOnline() == false) return;
     }
 
     @Override
     public void clearLine(@NotNull String lineKey) {
-        if(getPlayer().isOnline() == false) return;
+        if(getXorePlayer().getPlayer().isOnline() == false) return;
     }
 
     @Override
     public void clearLines() {
-        if(getPlayer().isOnline() == false) return;
+        if(getXorePlayer().getPlayer().isOnline() == false) return;
     }
 
     @Override
     public void hideSidebar() {
-        if(getPlayer().isOnline() == false) return;
+        if(getXorePlayer().getPlayer().isOnline() == false) return;
     }
 
     @Override
     public void showSidebar() {
-        if(getPlayer().isOnline() == false) return;
+        if(getXorePlayer().getPlayer().isOnline() == false) return;
     }
 
     @Override
     public boolean isShowed() {
-        return getPlayer().isOnline() && this.showedStatus;
+        return getXorePlayer().getPlayer().isOnline() && this.showedStatus;
     }
 
 
     @Override
     public void setShowedSidebar(boolean showedStatus) {
-        if(getPlayer().isOnline() == false) return;
+        if(getXorePlayer().getPlayer().isOnline() == false) return;
 
         this.showedStatus = showedStatus;
     }
