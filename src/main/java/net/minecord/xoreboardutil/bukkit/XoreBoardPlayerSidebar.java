@@ -18,7 +18,7 @@ public class XoreBoardPlayerSidebar implements Sidebar {
     private String displayName;
     private ConcurrentHashMap<String, Integer> lineKeys = new ConcurrentHashMap<String, Integer>();
 
-    private boolean showedStatus = false;
+    private boolean showedStatus, showedGlobalStatus = false;
 
     XoreBoardPlayerSidebar(@NotNull XoreBoard xoreboard, @NotNull org.bukkit.entity.Player player) {
         this.xoreBoard = xoreboard;
@@ -128,11 +128,26 @@ public class XoreBoardPlayerSidebar implements Sidebar {
         return getPlayer().isOnline() && this.showedStatus;
     }
 
+    public boolean isShowedGlobal() {
+        return getPlayer().isOnline() && this.showedGlobalStatus;
+    }
+
     @Override
     public void setShowedSidebar(boolean showedStatus) {
         if(getPlayer().isOnline() == false) return;
 
         this.showedStatus = showedStatus;
+    }
+
+    /**
+     * public void setShowedGlobalSidebar(boolean showedGlobalStatus)
+     * @param showedGlobalStatus boolean {@link Boolean {@value showedGlobalStatus}}
+     */
+
+    public void setShowedGlobalSidebar(boolean showedGlobalStatus) {
+        if(getPlayer().isOnline() == false) return;
+
+        this.showedGlobalStatus = showedGlobalStatus;
     }
 
     @Override

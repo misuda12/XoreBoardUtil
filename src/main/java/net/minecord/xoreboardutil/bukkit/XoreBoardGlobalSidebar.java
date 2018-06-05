@@ -2,6 +2,7 @@ package net.minecord.xoreboardutil.bukkit;
 
 import lombok.Getter;
 import net.minecord.xoreboardutil.Sidebar;
+import net.minecord.xoreboardutil.SidebarType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -12,6 +13,10 @@ public class XoreBoardGlobalSidebar implements Sidebar {
 
     private String displayName;
     private ConcurrentHashMap<String, Integer> lineKeys = new ConcurrentHashMap<String, Integer>();
+
+    public XoreBoardGlobalSidebar(@NotNull XoreBoard xoreBoard) {
+
+    }
 
     @Override
     public String getDisplayName() {
@@ -39,7 +44,7 @@ public class XoreBoardGlobalSidebar implements Sidebar {
     }
 
     @Override
-    public void rewriteLine(@NotNull String lineKey) {
+    public void rewriteLine(@NotNull String lineKey, int value) {
 
     }
 
@@ -76,4 +81,10 @@ public class XoreBoardGlobalSidebar implements Sidebar {
     @Override
     public void setShowedSidebar(boolean statement) {
 
-}}
+}
+
+    @Override
+    public SidebarType getType() {
+        return null;
+    }
+}
