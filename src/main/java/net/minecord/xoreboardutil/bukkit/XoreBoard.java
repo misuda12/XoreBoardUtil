@@ -79,7 +79,7 @@ public class XoreBoard {
         if(this.xorePlayers.containsKey(player)) return;
 
         final XorePlayer xorePlayer = new XorePlayer(this, player);
-        player.setScoreboard(this.scoreboard);
+            player.setScoreboard(this.scoreboard);
 
         this.xorePlayers.put(player, xorePlayer);
     }
