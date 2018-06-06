@@ -89,6 +89,6 @@ public class XoreBoardSharedSidebar implements Sidebar {
 
     @Override
     public SidebarType getType() {
-        return null;
+        return SidebarType.SHARED;
     }
 }

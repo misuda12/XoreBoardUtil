@@ -19,9 +19,11 @@ public class XoreBoardPrivateSidebar implements Sidebar {
 
     private boolean showedStatus = false;
 
-    XoreBoardPrivateSidebar(@NotNull XoreBoard xoreboard, @NotNull XorePlayer xorePlayer) {
-        this.xoreBoard = xoreboard;
+    XoreBoardPrivateSidebar(@NotNull XoreBoard xoreBoard, @NotNull XorePlayer xorePlayer) {
+        this.xoreBoard = xoreBoard;
         this.xorePlayer = xorePlayer;
+
+        this.displayName = (org.bukkit.ChatColor.translateAlternateColorCodes('&', xoreBoard.getName())).substring(0, 32);
     }
 
     /**
@@ -52,11 +54,9 @@ public class XoreBoardPrivateSidebar implements Sidebar {
     @Override
     public void setDisplayName(@NotNull String displayName) {
         if(getXorePlayer().getPlayer().isOnline() == false) return;
-        String tempDisplayName = org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName);
+        if(getXorePlayer().hasSharedSidebar()) return;
+        String tempDisplayName = (org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName)).substring(0, 32);
         if(getDisplayName().equals(tempDisplayName)) return;
-        if(displayName.length() > 32) {
-            return;
-        }
 
         // Packet
 
@@ -126,7 +126,6 @@ public class XoreBoardPrivateSidebar implements Sidebar {
     public boolean isShowed() {
         return getXorePlayer().getPlayer().isOnline() && this.showedStatus;
     }
-
 
     @Override
     public void setShowedSidebar(boolean showedStatus) {
