@@ -8,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static net.minecord.xoreboardutil.bukkit.XoreBoard.XoreBoardPackets.getPacket;
+
 @Getter
 public class XoreBoardPrivateSidebar implements Sidebar {
 
