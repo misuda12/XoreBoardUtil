@@ -41,11 +41,11 @@ public class XorePlayer {
     }
 
     /**
-     * public boolean hasDisplayedSharedSidebar()
+     * public boolean isShowedShared()
      * @return boolean
      */
 
-    public boolean hasDisplayedSharedSidebar() {
+    public boolean isShowedShared() {
         return this.sharedSidebar;
     }
 
@@ -57,6 +57,15 @@ public class XorePlayer {
     @NotNull
     public final XoreBoard getXoreBoard() {
         return this.xoreBoard;
+    }
+
+    /**
+     * public int getID()
+     * @return int
+     */
+
+    public int getID() {
+        return getPlayer().getEntityId();
     }
 
     /**

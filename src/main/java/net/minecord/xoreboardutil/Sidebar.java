@@ -1,6 +1,14 @@
 package net.minecord.xoreboardutil;
 
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Getter
 public interface Sidebar {
@@ -58,7 +66,7 @@ public interface Sidebar {
      * @param value int {@link Integer}
      */
 
-    public void rewriteLine(@org.jetbrains.annotations.NotNull String lineKey, int value);
+    void rewriteLine(@org.jetbrains.annotations.NotNull String lineKey, int value);
 
     /**
      * void rewriteLines(java.util.HashMap<String, Integer> lineKeys)
@@ -101,4 +109,100 @@ public interface Sidebar {
 
     SidebarType getType();
 
-}
+    /**
+     * default Object prepareVanillaPacket(@NotNull String packetName, Object... objects)
+     * @param packetName String {@link String}
+     * @param objects Object... {@link Object}
+     * @return Object
+     */
+
+    default Object prepareVanillaPacket(@NotNull String packetName, Object... objects) {
+        int objectIndex = 0;
+        Object outputObject = null;
+        try {
+            outputObject = Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + "." + packetName).getConstructor().newInstance();
+            for(@NotNull Field field : getDeclaredFields(Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + "." + packetName))) {
+                rewriteField(outputObject, field.getName(), objects[objectIndex]);
+                    objectIndex++;
+            }
+        } catch(ClassNotFoundException | InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException ignored) {}
+        return outputObject;
+    }
+
+    /**
+     * default void sendPacket(@NotNull org.bukkit.entity.Player player, Object packet)
+     * @param player Player {@link org.bukkit.entity.Player}
+     * @param packet Object {@link Object}
+     */
+
+    default void sendPacket(@NotNull org.bukkit.entity.Player player, Object packet) {
+        Object craftPlayer;
+        try {
+            craftPlayer = Class.forName("org.bukkit.craftbukkit." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".entity.CraftPlayer").cast(player);
+            Object handle = getFieldInstance(craftPlayer, "entity");
+            Object playerConnection = getFieldInstance(handle, "playerConnection");
+            invokeMethod(playerConnection, "sendPacket", new Class[] {Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".Packet")}, packet);
+        } catch (ClassNotFoundException ignored) {}
+    }
+
+    /**
+     * protected List<Field> getDeclaredFields(@NotNull Class clazz)
+     * @param clazz Class {@link Class}
+     * @return List<Field>
+     */
+
+    default List<Field> getDeclaredFields(@NotNull Class clazz) {
+        List<Field> fields = new ArrayList<Field>(Arrays.asList(clazz.getDeclaredFields()));
+        if(clazz.getSuperclass() != null) fields.addAll(getDeclaredFields(clazz.getSuperclass()));
+        return fields;
+    }
+
+    /**
+     * default void rewriteField(@NotNull Object packet, @NotNull String key, Object value)
+     * @param packet Object {@link Object}
+     * @param key String {@link String}
+     * @param value Object {@link Object}
+     */
+
+    default void rewriteField(@NotNull Object packet, @NotNull String key, Object value) {
+        try {
+            Field field = packet.getClass().getDeclaredField(key);
+                field.setAccessible(true);
+                    field.set(packet, value);
+        } catch(NoSuchFieldException | IllegalAccessException ignored) {}
+    }
+
+    /**
+     * protected Object getFieldInstance(@NotNull Object instance, @NotNull String fieldName)
+     * @param instance Object {@link Object}
+     * @param fieldName String {@link String}
+     * @return Object
+     */
+
+    default Object getFieldInstance(@NotNull Object instance, @NotNull String fieldName) {
+        try {
+            Field field = getDeclaredField(getDeclaredFields(instance.getClass()), fieldName);
+                field.setAccessible(true);
+            return field.get(instance);
+        } catch(IllegalAccessException ignored) {}
+        return null;
+    }
+
+    default void invokeMethod(@NotNull Object instance, @NotNull String methodName, Class<?>[] classes, Object... values) {
+        try {
+            Method method = instance.getClass().getDeclaredMethod(methodName, classes);
+            method.setAccessible(true);
+            method.invoke(instance, values);
+        } catch(NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {}
+    }
+
+    /**
+     * default Field getDeclaredField(List<Field> fields, @NotNull String fieldName)
+     * @param fields List {@link List}
+     * @param fieldName String {@link String}
+     * @return Field
+     */
+
+    default Field getDeclaredField(List<Field> fields, @NotNull String fieldName) {
+        return fields.stream().filter(field -> field.getName().equalsIgnoreCase(fieldName)).findFirst().orElse(null);
+}}

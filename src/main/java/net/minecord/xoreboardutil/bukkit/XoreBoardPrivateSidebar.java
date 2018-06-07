@@ -8,8 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static net.minecord.xoreboardutil.bukkit.XoreBoard.XoreBoardPackets.getPacket;
-
 @Getter
 public class XoreBoardPrivateSidebar implements Sidebar {
 
@@ -57,17 +55,16 @@ public class XoreBoardPrivateSidebar implements Sidebar {
     public void setDisplayName(@NotNull String displayName) {
         if(getXorePlayer().getPlayer().isOnline() == false) return;
         String tempDisplayName = (org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName)).substring(0, 32);
-            if(getDisplayName().equals(tempDisplayName)) return;
-        if(getXorePlayer().hasDisplayedSharedSidebar() == false) {
+        if(getDisplayName().equals(tempDisplayName)) return;
+        if(getXorePlayer().isShowedShared() == false) sendPacket(getXorePlayer().getPlayer(), prepareVanillaPacket("PacketPlayOutScoreboardObjective", getXoreBoard().getID() + ":" + getXorePlayer().getID(), tempDisplayName, 2));
 
-        }
         this.displayName = tempDisplayName;
     }
 
     @Override
     public void putLine(@NotNull String lineKey, int value) {
         if(getXorePlayer().getPlayer().isOnline() == false) return;
-        if(getXorePlayer().hasDisplayedSharedSidebar() == false) {
+        if(getXorePlayer().isShowedShared() == false) {
 
         }
         this.lineKeys.put(lineKey, value);
@@ -79,7 +76,7 @@ public class XoreBoardPrivateSidebar implements Sidebar {
         this.lineKeys.forEach((lineKey, value) -> {
             if(lineKeys.containsKey(lineKey) && lineKeys.get(lineKey).equals(value)) lineKeys.remove(lineKey);
         });
-        if(getXorePlayer().hasDisplayedSharedSidebar() == false) {
+        if(getXorePlayer().isShowedShared() == false) {
 
         }
         this.lineKeys.putAll(lineKeys);
