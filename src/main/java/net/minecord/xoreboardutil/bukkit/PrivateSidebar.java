@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
-public class XoreBoardPrivateSidebar implements Sidebar {
+public class PrivateSidebar implements Sidebar {
 
     private @NotNull final XorePlayer xorePlayer;
 
@@ -19,7 +19,7 @@ public class XoreBoardPrivateSidebar implements Sidebar {
 
     private boolean showedStatus = false;
 
-    XoreBoardPrivateSidebar(@NotNull XoreBoard xoreBoard, @NotNull XorePlayer xorePlayer) {
+    PrivateSidebar(@NotNull XoreBoard xoreBoard, @NotNull XorePlayer xorePlayer) {
         this.xoreBoard = xoreBoard;
         this.xorePlayer = xorePlayer;
 
