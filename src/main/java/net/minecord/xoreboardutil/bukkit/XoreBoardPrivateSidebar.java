@@ -56,7 +56,7 @@ public class XoreBoardPrivateSidebar implements Sidebar {
         if(getXorePlayer().getPlayer().isOnline() == false) return;
         String tempDisplayName = (org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName)).substring(0, 32);
             if(getDisplayName().equals(tempDisplayName)) return;
-        if(getXorePlayer().isShowedShared() == false && getXorePlayer().getPrivateSidebar().isShowed()) sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardObjective", getXoreBoard().getID(), tempDisplayName, 2));
+        if(getXorePlayer().isShowedShared() == false && getXorePlayer().getPrivateSidebar().isShowed()) sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardObjective", getXoreBoard().getID(), tempDisplayName, XoreBoard.XoreBoardPackets.EnumScoreboardHealthDisplay.INTEGER.toNamespace(), 2));
 
         this.displayName = tempDisplayName;
     }
@@ -123,13 +123,21 @@ public class XoreBoardPrivateSidebar implements Sidebar {
     @Override
     public void hideSidebar() {
         if(getXorePlayer().getPlayer().isOnline() == false) return;
+        if(getXorePlayer().isShowedShared() == false && getXorePlayer().getPrivateSidebar().isShowed()) {
+            sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardObjective", getXoreBoard().getID(), null, null, 1));
+
+            this.showedStatus = false;
+            return;
+        }
+        showSidebar();
+            hideSidebar();
     }
 
     @Override
     public void showSidebar() {
         if(getXorePlayer().getPlayer().isOnline() == false) return;
         if(getXorePlayer().isShowedShared() == false && getXorePlayer().getPrivateSidebar().isShowed()) {
-            sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardObjective", getXoreBoard().getID(), this.displayName, 0));
+            sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardObjective", getXoreBoard().getID(), this.displayName, XoreBoard.XoreBoardPackets.EnumScoreboardHealthDisplay.INTEGER.toNamespace(), 0));
                 sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardDisplayObjective", 1, getXorePlayer().getID()));
             this.lineKeys.forEach((lineKey, value) -> sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardScore", getXorePlayer().getID(), (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey)).substring(0, 32), value, XoreBoard.XoreBoardPackets.EnumScoreboardAction.CHANGE.toNamespace())));
 
