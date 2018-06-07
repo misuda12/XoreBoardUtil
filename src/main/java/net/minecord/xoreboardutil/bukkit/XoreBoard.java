@@ -107,9 +107,6 @@ public class XoreBoard {
 
     public XoreBoardSharedSidebar getSharedSidebar() {
         if(this.sharedSidebar == null) this.sharedSidebar = new XoreBoardSharedSidebar(this);
-        this.xorePlayers.forEach((player, xorePlayer) -> {
-            if((xorePlayer.hasDisplayedSharedSidebar() == false)) this.sharedSidebar.showSidebar();
-        });
         return ((XoreBoardSharedSidebar) this.sharedSidebar);
     }
 
