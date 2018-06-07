@@ -83,11 +83,6 @@ public class XoreBoardSharedSidebar implements Sidebar {
     }
 
     @Override
-    public void setShowedSidebar(boolean statement) {
-
-    }
-
-    @Override
     public SidebarType getType() {
         return SidebarType.SHARED;
 }}

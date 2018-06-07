@@ -166,4 +166,23 @@ public class XoreBoard {
                 }
                 catch(final @NotNull Exception ignored) {}
                 return null;
+        }}
+
+        public enum EnumScoreboardHealthDisplay {
+
+            INTEGER, HEARTS;
+
+            /**
+             * public Object toNamespace()
+             * @return Object
+             */
+
+            public Object toNamespace() {
+                try {
+                    Method method = Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".IScoreboardCriteria$EnumScoreboardHealthDisplay").getDeclaredMethod("valueOf", String.class);
+                    method.setAccessible(true);
+                    return method.invoke(null, name());
+                }
+                catch(final @NotNull Exception ignored) {}
+                return null;
 }}}}

@@ -128,8 +128,16 @@ public class XoreBoardPrivateSidebar implements Sidebar {
     @Override
     public void showSidebar() {
         if(getXorePlayer().getPlayer().isOnline() == false) return;
+        if(getXorePlayer().isShowedShared() == false && getXorePlayer().getPrivateSidebar().isShowed()) {
+            sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardObjective", getXoreBoard().getID(), this.displayName, 0));
+                sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardDisplayObjective", 1, getXorePlayer().getID()));
+            this.lineKeys.forEach((lineKey, value) -> sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardScore", getXorePlayer().getID(), (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey)).substring(0, 32), value, XoreBoard.XoreBoardPackets.EnumScoreboardAction.CHANGE.toNamespace())));
 
-        this.showedStatus = true;
+            this.showedStatus = true;
+            return;
+        }
+        hideSidebar();
+            showSidebar();
     }
 
     @Override
