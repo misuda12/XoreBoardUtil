@@ -56,21 +56,20 @@ public class XoreBoardPrivateSidebar implements Sidebar {
     @Override
     public void setDisplayName(@NotNull String displayName) {
         if(getXorePlayer().getPlayer().isOnline() == false) return;
-        if(getXorePlayer().hasSharedSidebar()) return;
         String tempDisplayName = (org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName)).substring(0, 32);
-        if(getDisplayName().equals(tempDisplayName)) return;
+            if(getDisplayName().equals(tempDisplayName)) return;
+        if(getXorePlayer().hasDisplayedSharedSidebar() == false) {
 
-        // Packet
-
+        }
         this.displayName = tempDisplayName;
     }
 
     @Override
     public void putLine(@NotNull String lineKey, int value) {
         if(getXorePlayer().getPlayer().isOnline() == false) return;
+        if(getXorePlayer().hasDisplayedSharedSidebar() == false) {
 
-        // Packet
-
+        }
         this.lineKeys.put(lineKey, value);
     }
 
@@ -80,9 +79,9 @@ public class XoreBoardPrivateSidebar implements Sidebar {
         this.lineKeys.forEach((lineKey, value) -> {
             if(lineKeys.containsKey(lineKey) && lineKeys.get(lineKey).equals(value)) lineKeys.remove(lineKey);
         });
+        if(getXorePlayer().hasDisplayedSharedSidebar() == false) {
 
-        // Packet
-
+        }
         this.lineKeys.putAll(lineKeys);
     }
 
@@ -94,14 +93,21 @@ public class XoreBoardPrivateSidebar implements Sidebar {
     @Override
     public void rewriteLine(@NotNull String lineKey, int value) {
         if(getXorePlayer().getPlayer().isOnline() == false) return;
-        if(this.lineKeys.containsKey(lineKey)) {
-
-        } else putLine(lineKey, value);
-    }
+        if(this.lineKeys.containsKey(lineKey) == false || this.lineKeys.get(lineKey).equals(value) == false) putLine(lineKey, value);
+        else {
+            clearLine(lineKey);
+                putLine(lineKey, value);
+    }}
 
     @Override
     public void rewriteLines(HashMap<String, Integer> lineKeys) {
         if(getXorePlayer().getPlayer().isOnline() == false) return;
+        this.lineKeys.forEach((lineKey, lineValue) -> {
+            if(lineKeys.containsKey(lineKey) == false) clearLine(lineKey);
+        });
+        lineKeys.forEach((lineKey, lineValue) -> {
+            if(this.lineKeys.containsKey(lineKey) == false || this.lineKeys.get(lineKey).equals(lineValue) == false) putLine(lineKey, lineValue);
+        });
     }
 
     @Override

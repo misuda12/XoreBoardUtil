@@ -106,7 +106,7 @@ public class XoreBoard {
     public XoreBoardSharedSidebar getSharedSidebar() {
         if(this.sharedSidebar == null) this.sharedSidebar = new XoreBoardSharedSidebar(this);
         this.xorePlayers.forEach((player, xorePlayer) -> {
-            if((xorePlayer.hasSharedSidebar() == false)) this.sharedSidebar.showSidebar();
+            if((xorePlayer.hasDisplayedSharedSidebar() == false)) this.sharedSidebar.showSidebar();
         });
         return ((XoreBoardSharedSidebar) this.sharedSidebar);
     }
@@ -150,6 +150,24 @@ public class XoreBoard {
 
     @Getter
     static class XoreBoardPackets {
+        enum EnumScoreboardAction {
+
+            CHANGE, REMOVE;
+
+            /**
+             * public Object toNamespace()
+             * @return Object
+             */
+
+            public Object toNamespace() {
+                try {
+                    Method method = Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".PacketPlayOutScoreboardScore$EnumScoreboardAction").getDeclaredMethod("valueOf", String.class);
+                    method.setAccessible(true);
+                    return method.invoke(null, name());
+                }
+                catch(final @NotNull Exception ignored) {}
+                return null;
+        }}
 
         /**
          * static Object getPacket(@NotNull String packetName, Object... objects)

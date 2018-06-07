@@ -41,11 +41,11 @@ public class XorePlayer {
     }
 
     /**
-     * public boolean hasSharedSidebar()
+     * public boolean hasDisplayedSharedSidebar()
      * @return boolean
      */
 
-    public boolean hasSharedSidebar() {
+    public boolean hasDisplayedSharedSidebar() {
         return this.sharedSidebar;
     }
 
