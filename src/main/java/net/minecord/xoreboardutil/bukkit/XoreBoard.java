@@ -96,6 +96,8 @@ public class XoreBoard {
             final XorePlayer xorePlayer = this.xorePlayers.get(player);
                 if(xorePlayer.getPrivateSidebar().isShowed()) xorePlayer.getPrivateSidebar().hideSidebar();
                     if(xorePlayer.hasDisplayedSharedSidebar()) getSharedSidebar().hideSidebar(xorePlayer);
+
+            this.xorePlayers.remove(player);
     }}
 
     /**
