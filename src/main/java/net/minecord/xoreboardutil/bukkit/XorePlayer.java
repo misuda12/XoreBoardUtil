@@ -65,6 +65,7 @@ public class XorePlayer {
      */
 
     @NotNull
+    @org.jetbrains.annotations.Contract(pure = true)
     public String getID() {
         return getXoreBoard().getID() + "" + getPlayer().getEntityId();
     }
