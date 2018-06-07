@@ -1,6 +1,7 @@
 package net.minecord.xoreboardutil;
 
 import lombok.Getter;
+import net.minecord.xoreboardutil.bukkit.XorePlayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
@@ -96,13 +97,6 @@ public interface Sidebar {
     boolean isShowed();
 
     /**
-     * void setShowedSidebar(boolean statement)
-     * @param statement boolean {@link Boolean}
-     */
-
-    void setShowedSidebar(boolean statement);
-
-    /**
      * SidebarType getType()
      * @return SidebarType
      */
@@ -127,6 +121,22 @@ public interface Sidebar {
             }
         } catch(ClassNotFoundException | InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException ignored) {}
         return outputObject;
+    }
+
+    /**
+     * default void sendPacket(@NotNull XorePlayer xorePlayer, Object packet)
+     * @param xorePlayer XorePlayer {@link XorePlayer}
+     * @param packet Object {@link Object}
+     */
+
+    default void sendPacket(@NotNull XorePlayer xorePlayer, Object packet) {
+        Object craftPlayer;
+        try {
+            craftPlayer = Class.forName("org.bukkit.craftbukkit." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".entity.CraftPlayer").cast(xorePlayer.getPlayer());
+            Object handle = getFieldInstance(craftPlayer, "entity");
+            Object playerConnection = getFieldInstance(handle, "playerConnection");
+            invokeMethod(playerConnection, "sendPacket", new Class[] {Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".Packet")}, packet);
+        } catch (ClassNotFoundException ignored) {}
     }
 
     /**

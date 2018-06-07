@@ -60,12 +60,13 @@ public class XorePlayer {
     }
 
     /**
-     * public int getID()
+     * public public String getID()
      * @return int
      */
 
-    public int getID() {
-        return getPlayer().getEntityId();
+    @NotNull
+    public String getID() {
+        return getXoreBoard().getID() + "" + getPlayer().getEntityId();
     }
 
     /**
