@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 public final class XoreBoardCreateEvent extends org.bukkit.event.Event {
 
     private @NotNull final XoreBoard xoreBoard;
-
     private static final org.bukkit.event.HandlerList handlerList = new org.bukkit.event.HandlerList();
 
     public XoreBoardCreateEvent(@NotNull XoreBoard xoreBoard) {
