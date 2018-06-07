@@ -94,8 +94,8 @@ public class XoreBoard {
         if(player.isOnline() == false) return;
         if(this.xorePlayers.containsKey(player)) {
             final XorePlayer xorePlayer = this.xorePlayers.get(player);
-
-                getSharedSidebar().hideSidebar(xorePlayer);
+                if(xorePlayer.getPrivateSidebar().isShowed()) xorePlayer.getPrivateSidebar().hideSidebar();
+                    if(xorePlayer.hasDisplayedSharedSidebar()) getSharedSidebar().hideSidebar(xorePlayer);
     }}
 
     /**
