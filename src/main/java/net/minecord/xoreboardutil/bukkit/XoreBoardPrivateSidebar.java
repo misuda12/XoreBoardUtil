@@ -132,7 +132,7 @@ public class XoreBoardPrivateSidebar implements Sidebar {
                 if(getXorePlayer().getPreviousSidebar() instanceof XoreBoardSharedSidebar && getXorePlayer().getPreviousSidebar().isShowed()) {
                     getXorePlayer().setPreviousSidebar(this);
                         getXoreBoard().getSharedSidebar().showSidebar(getXorePlayer());
-            }}
+            }} else getXorePlayer().setPreviousSidebar(this);
             return;
         }
         showSidebar();

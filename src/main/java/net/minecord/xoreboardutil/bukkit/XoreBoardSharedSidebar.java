@@ -117,7 +117,21 @@ public class XoreBoardSharedSidebar implements Sidebar {
     public void hideSidebar() {
         getXoreBoard().getXorePlayers().forEach(xorePlayer -> {
             if(xorePlayer.getPlayer().isOnline()) {
+                if(xorePlayer.getPrivateSidebar().isShowed() == false && isShowed()) {
+                    sendPacket(xorePlayer, prepareVanillaPacket("PacketPlayOutScoreboardObjective", xorePlayer.getID(), null, null, 1));
 
+                    this.showedStatus = false;
+
+                    if(xorePlayer.getPreviousSidebar() != null) {
+                        if(xorePlayer.getPreviousSidebar() instanceof XoreBoardPrivateSidebar && xorePlayer.getPreviousSidebar().isShowed()) {
+                            xorePlayer.setPreviousSidebar(this);
+                                xorePlayer.getPrivateSidebar().showSidebar();
+                    }} else xorePlayer.setPreviousSidebar(this);
+                    xorePlayer.setShowedSharedSidebar(false);
+                    return;
+            }
+            showSidebar(xorePlayer);
+                hideSidebar(xorePlayer);
         }});
     }
 
@@ -128,6 +142,19 @@ public class XoreBoardSharedSidebar implements Sidebar {
 
     public void hideSidebar(@NotNull XorePlayer xorePlayer) {
         if(xorePlayer.getPlayer().isOnline() == false) return;
+        if(xorePlayer.getPrivateSidebar().isShowed() == false && isShowed()) {
+            sendPacket(xorePlayer, prepareVanillaPacket("PacketPlayOutScoreboardObjective", xorePlayer.getID(), null, null, 1));
+
+            if(xorePlayer.getPreviousSidebar() != null) {
+                if(xorePlayer.getPreviousSidebar() instanceof XoreBoardPrivateSidebar && xorePlayer.getPreviousSidebar().isShowed()) {
+                        xorePlayer.setPreviousSidebar(this);
+                            xorePlayer.getPrivateSidebar().showSidebar();
+            }} else xorePlayer.setPreviousSidebar(this);
+            xorePlayer.setShowedSharedSidebar(false);
+            return;
+        }
+        showSidebar(xorePlayer);
+            hideSidebar(xorePlayer);
     }
 
     @Override
