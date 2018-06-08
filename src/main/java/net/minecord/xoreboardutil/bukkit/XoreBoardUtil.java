@@ -87,8 +87,8 @@ public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
 
     public void removeXoreBoard(@NotNull String boardName) {
         if(this.xoreBoards.containsKey(boardName)) return;
+        getServer().getLogger().warning("Removing XoreBoard(" + boardName + ") with ID(" + getXoreBoard(boardName).getID() + ")");
         getXoreBoard(boardName).destroy();
-
         this.xoreBoards.remove(boardName);
     }
 
@@ -98,9 +98,7 @@ public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
      */
 
     public void removeXoreBoard(@NotNull XoreBoard xoreBoard) {
-        xoreBoard.destroy();
-
-        this.xoreBoards.remove(xoreBoard.getName());
+        removeXoreBoard(xoreBoard.getName());
     }
 
     /**
