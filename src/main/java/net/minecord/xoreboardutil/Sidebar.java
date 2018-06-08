@@ -1,6 +1,5 @@
 package net.minecord.xoreboardutil;
 
-import lombok.Getter;
 import net.minecord.xoreboardutil.bukkit.XorePlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Getter
 public interface Sidebar {
 
     /**
