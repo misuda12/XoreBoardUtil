@@ -20,7 +20,7 @@ public class XoreBoardSharedSidebar implements Sidebar {
     public XoreBoardSharedSidebar(@NotNull XoreBoard xoreBoard) {
         this.xoreBoard = xoreBoard;
 
-        String tempDisplayName = (org.bukkit.ChatColor.translateAlternateColorCodes('&', xoreBoard.getName())).length() > 32 ? (org.bukkit.ChatColor.translateAlternateColorCodes('&', xoreBoard.getName())).substring(0, 32) : (org.bukkit.ChatColor.translateAlternateColorCodes('&', xoreBoard.getName()));
+        this.displayName = (org.bukkit.ChatColor.translateAlternateColorCodes('&', xoreBoard.getName())).length() > 32 ? (org.bukkit.ChatColor.translateAlternateColorCodes('&', xoreBoard.getName())).substring(0, 32) : (org.bukkit.ChatColor.translateAlternateColorCodes('&', xoreBoard.getName()));
     }
 
     @NotNull
