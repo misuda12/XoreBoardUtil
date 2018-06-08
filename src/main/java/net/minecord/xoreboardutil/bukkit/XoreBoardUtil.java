@@ -1,13 +1,11 @@
 package net.minecord.xoreboardutil.bukkit;
 
-import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-@Getter
 public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
 
     private static XoreBoardUtil xoreBoardUtil;
