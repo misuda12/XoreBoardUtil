@@ -143,11 +143,10 @@ public class XoreBoardPrivateSidebar implements Sidebar {
             sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardObjective", getXorePlayer().getID(), this.displayName, XoreBoard.XoreBoardPackets.EnumScoreboardHealthDisplay.INTEGER.toNamespace(), 0));
                 sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardDisplayObjective", 1, getXorePlayer().getID()));
             this.lineKeys.forEach((lineKey, value) -> sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardScore", getXorePlayer().getID(), (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey)).length() > 48 ? (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey)).substring(0, 48) : (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey)), value, XoreBoard.XoreBoardPackets.EnumScoreboardAction.CHANGE.toNamespace())));
-            System.out.println("point:1");
+
             this.showedStatus = true;
             return;
         }
-        System.out.println("point:2");
         hideSidebar();
             showSidebar();
     }

@@ -85,9 +85,9 @@ public class XoreBoard {
     public void addPlayer(@NotNull org.bukkit.entity.Player player) {
         if(player.isOnline() == false) return;
         if(this.xorePlayers.containsKey(player)) return;
+        player.setScoreboard(this.scoreboard);
 
         final XorePlayer xorePlayer = new XorePlayer(this, player);
-            player.setScoreboard(this.scoreboard);
 
         this.xorePlayers.put(player, xorePlayer);
         if(this.sharedSidebar != null) getSharedSidebar().showSidebar(xorePlayer);
@@ -102,6 +102,7 @@ public class XoreBoard {
     public XorePlayer getPlayer(@NotNull org.bukkit.entity.Player player) {
         if(this.xorePlayers.containsKey(player)) return xorePlayers.get(player);
         else {
+            player.setScoreboard(this.scoreboard);
             this.xorePlayers.put(player, new XorePlayer(this, player));
                 return this.xorePlayers.get(player);
     }}

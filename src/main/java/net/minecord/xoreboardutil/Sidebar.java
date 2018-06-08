@@ -122,12 +122,12 @@ public interface Sidebar {
         int objectIndex = 0;
         Object outputObject = null;
         try {
-            outputObject = Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + "." + packetName).getConstructor().newInstance();
+            outputObject = Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + "." + packetName).newInstance();
             for(@NotNull Field field : getDeclaredFields(Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + "." + packetName))) {
                 rewriteField(outputObject, field.getName(), objects[objectIndex]);
                     objectIndex++;
             }
-        } catch(ClassNotFoundException | InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException ignored) {}
+        } catch(ClassNotFoundException | IllegalAccessException | InstantiationException ignored) {}
         return outputObject;
     }
 
@@ -138,12 +138,11 @@ public interface Sidebar {
      */
 
     default void sendPacket(@NotNull XorePlayer xorePlayer, Object packet) {
-        Object craftPlayer;
         try {
             final XoreBoardSendPacketEvent xoreBoardSendPacketEvent = new XoreBoardSendPacketEvent(getXoreBoard(), xorePlayer.getPlayer(), packet);
             XoreBoardUtil.getPlugin(XoreBoardUtil.class).getServer().getPluginManager().callEvent(xoreBoardSendPacketEvent);
                 if(xoreBoardSendPacketEvent.isCancelled()) return;
-            craftPlayer = Class.forName("org.bukkit.craftbukkit." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".entity.CraftPlayer").cast(xorePlayer.getPlayer());
+            Object craftPlayer = Class.forName("org.bukkit.craftbukkit." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".entity.CraftPlayer").cast(xorePlayer.getPlayer());
             Object handle = getFieldInstance(craftPlayer, "entity");
             Object playerConnection = getFieldInstance(handle, "playerConnection");
             invokeMethod(playerConnection, "sendPacket", new Class[] {Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".Packet")}, packet);
@@ -193,6 +192,7 @@ public interface Sidebar {
             Field field = packet.getClass().getDeclaredField(key);
                 field.setAccessible(true);
                     field.set(packet, value);
+                    System.out.println(key + "/" + value.toString());
         } catch(NoSuchFieldException | IllegalAccessException ignored) {}
     }
 
