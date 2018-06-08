@@ -2,7 +2,9 @@ package net.minecord.xoreboardutil.bukkit;
 
 import lombok.Getter;
 
+import net.minecord.xoreboardutil.Sidebar;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @Getter
 public class XorePlayer {
@@ -10,7 +12,8 @@ public class XorePlayer {
     private @NotNull final XoreBoard xoreBoard;
     private @NotNull final org.bukkit.entity.Player player;
 
-    private PrivateSidebar privateSidebar;
+    private @Nullable Sidebar previousSidebar;
+    private XoreBoardPrivateSidebar privateSidebar;
 
     private boolean sharedSidebar = false;
 
@@ -18,35 +21,56 @@ public class XorePlayer {
         this.xoreBoard = xoreBoard;
         this.player = player;
 
-        if(this.privateSidebar == null) this.privateSidebar = new PrivateSidebar(getXoreBoard(), this);
+        this.privateSidebar = new XoreBoardPrivateSidebar(getXoreBoard(), this);
     }
 
     /**
-     * public PrivateSidebar getPrivateSidebar()
-     * @return PrivateSidebar
+     * public XoreBoardPrivateSidebar getPrivateSidebar()
+     * @return XoreBoardPrivateSidebar
      */
 
     @NotNull
-    public PrivateSidebar getPrivateSidebar() {
+    public XoreBoardPrivateSidebar getPrivateSidebar() {
         return this.privateSidebar;
     }
 
     /**
-     * public void setPrivateSidebar(@NotNull PrivateSidebar privateSidebar)
-     * @param privateSidebar PrivateSidebar {@link PrivateSidebar {@value privateSidebar}}
-     */
-
-    public void setPrivateSidebar(@NotNull PrivateSidebar privateSidebar) {
-        this.privateSidebar = privateSidebar;
-    }
-
-    /**
-     * public boolean isShowedShared()
+     * public boolean hasShowedShared()
      * @return boolean
      */
 
-    public boolean isShowedShared() {
+    public boolean hasShowedShared() {
         return this.sharedSidebar;
+    }
+
+    /**
+     * public boolean setShowedSharedSidebar(boolean sharedSidebar)
+     * @param sharedSidebar boolean {@link Boolean {@value sharedSidebar}}
+     * @return boolean
+     */
+
+    public boolean setShowedSharedSidebar(boolean sharedSidebar) {
+        this.sharedSidebar = sharedSidebar;
+        return this.sharedSidebar;
+    }
+
+    /**
+     * public Sidebar getPreviousSidebar()
+     * @return Sidebar
+     */
+
+    @Nullable
+    public Sidebar getPreviousSidebar() {
+        return this.previousSidebar;
+    }
+
+    /**
+     * public void setPreviousSidebar(@NotNull Sidebar previousSidebar)
+     * @param previousSidebar Sidebar {@link Sidebar {@value previousSidebar}}
+     */
+
+    public void setPreviousSidebar(@NotNull Sidebar previousSidebar) {
+        this.previousSidebar = previousSidebar;
     }
 
     /**

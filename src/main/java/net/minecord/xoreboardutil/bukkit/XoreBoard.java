@@ -19,7 +19,7 @@ public class XoreBoard {
     private HashMap<org.bukkit.entity.Player, XorePlayer> xorePlayers = new HashMap<org.bukkit.entity.Player, XorePlayer>();
 
     @Nullable
-    private SharedSidebar sharedSidebar;
+    private XoreBoardSharedSidebar sharedSidebar;
 
     XoreBoard(org.bukkit.scoreboard.Scoreboard scoreboard, @NotNull String ID, @NotNull String name) {
         this.scoreboard = scoreboard;
@@ -28,7 +28,14 @@ public class XoreBoard {
 
         final XoreBoardCreateEvent xoreBoardCreateEvent = new XoreBoardCreateEvent(this);
             XoreBoardUtil.getPlugin(XoreBoardUtil.class).getServer().getPluginManager().callEvent(xoreBoardCreateEvent);
-    }
+
+        if(getEntries() != null && this.xorePlayers.size() > 0) {
+            org.bukkit.Bukkit.getScheduler().runTaskTimerAsynchronously(XoreBoardUtil.getPlugin(XoreBoardUtil.class), () -> {
+                this.xorePlayers.forEach((player, xorePlayer) -> {
+                    if(player.isOnline() == false) this.xorePlayers.remove(player);
+            });
+        }, 0, 20);
+    }}
 
     /**
      * public final org.bukkit.scoreboard.Scoreboard getScoreboard()
@@ -83,6 +90,7 @@ public class XoreBoard {
             player.setScoreboard(this.scoreboard);
 
         this.xorePlayers.put(player, xorePlayer);
+        if(this.sharedSidebar != null) getSharedSidebar().showSidebar(xorePlayer);
     }
 
     /**
@@ -95,19 +103,32 @@ public class XoreBoard {
         if(this.xorePlayers.containsKey(player)) {
             final XorePlayer xorePlayer = this.xorePlayers.get(player);
                 if(xorePlayer.getPrivateSidebar().isShowed()) xorePlayer.getPrivateSidebar().hideSidebar();
-                    if(xorePlayer.isShowedShared()) getSharedSidebar().hideSidebar(xorePlayer);
+                    if(xorePlayer.hasShowedShared()) getSharedSidebar().hideSidebar(xorePlayer);
 
             this.xorePlayers.remove(player);
     }}
 
     /**
-     * public SharedSidebar getSidebar()
-     * @return SharedSidebar
+     * public void hideSidebar(@NotNull org.bukkit.entity.Player player)
+     * @param player Player {@link org.bukkit.entity.Player}
      */
 
-    public SharedSidebar getSharedSidebar() {
-        if(this.sharedSidebar == null) this.sharedSidebar = new SharedSidebar(this);
-        return ((SharedSidebar) this.sharedSidebar);
+    public void hideSidebar(@NotNull org.bukkit.entity.Player player) {
+        if(player.isOnline() == false) return;
+        if(this.xorePlayers.containsKey(player)) {
+            this.xorePlayers.get(player).setPreviousSidebar(null);
+                this.xorePlayers.get(player).getPrivateSidebar().hideSidebar();
+                    getSharedSidebar().hideSidebar(this.xorePlayers.get(player));
+    }}
+
+    /**
+     * public XoreBoardSharedSidebar getSidebar()
+     * @return XoreBoardSharedSidebar
+     */
+
+    public XoreBoardSharedSidebar getSharedSidebar() {
+        if(this.sharedSidebar == null) this.sharedSidebar = new XoreBoardSharedSidebar(this);
+        return ((XoreBoardSharedSidebar) this.sharedSidebar);
     }
 
     /**
