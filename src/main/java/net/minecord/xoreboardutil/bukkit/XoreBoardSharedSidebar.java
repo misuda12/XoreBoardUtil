@@ -20,16 +20,12 @@ public class XoreBoardSharedSidebar implements Sidebar {
     public XoreBoardSharedSidebar(@NotNull XoreBoard xoreBoard) {
         this.xoreBoard = xoreBoard;
 
-        this.displayName = (org.bukkit.ChatColor.translateAlternateColorCodes('&', xoreBoard.getName())).substring(0, 32);
+        String tempDisplayName = (org.bukkit.ChatColor.translateAlternateColorCodes('&', xoreBoard.getName())).length() > 32 ? (org.bukkit.ChatColor.translateAlternateColorCodes('&', xoreBoard.getName())).substring(0, 32) : (org.bukkit.ChatColor.translateAlternateColorCodes('&', xoreBoard.getName()));
     }
 
-    /**
-     * public XoreBoard getXoreBoard()
-     * @return XoreBoard
-     */
-
     @NotNull
-    public XoreBoard getXoreBoard() {
+    @Override
+    public final XoreBoard getXoreBoard() {
         return this.xoreBoard;
     }
 
@@ -40,7 +36,7 @@ public class XoreBoardSharedSidebar implements Sidebar {
 
     @Override
     public void setDisplayName(@NotNull String displayName) {
-        String tempDisplayName = (org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName)).substring(0, 32);
+        String tempDisplayName = (org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName)).length() > 32 ? (org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName)).substring(0, 32) : (org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName));
         if(getDisplayName().equals(tempDisplayName)) return;
         getXoreBoard().getXorePlayers().forEach(xorePlayer -> {
             if(xorePlayer.getPlayer().isOnline()) {

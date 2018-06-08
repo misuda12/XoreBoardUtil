@@ -1,6 +1,9 @@
 package net.minecord.xoreboardutil;
 
+import net.minecord.xoreboardutil.bukkit.XoreBoard;
+import net.minecord.xoreboardutil.bukkit.XoreBoardUtil;
 import net.minecord.xoreboardutil.bukkit.XorePlayer;
+import net.minecord.xoreboardutil.bukkit.event.XoreBoardSendPacketEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
@@ -11,6 +14,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public interface Sidebar {
+
+    /**
+     * XoreBoard getXoreBoard()
+     * @return XoreBoard
+     */
+
+    XoreBoard getXoreBoard();
 
     /**
      * String getDisplayName()
@@ -130,6 +140,9 @@ public interface Sidebar {
     default void sendPacket(@NotNull XorePlayer xorePlayer, Object packet) {
         Object craftPlayer;
         try {
+            final XoreBoardSendPacketEvent xoreBoardSendPacketEvent = new XoreBoardSendPacketEvent(getXoreBoard(), xorePlayer.getPlayer(), packet);
+            XoreBoardUtil.getPlugin(XoreBoardUtil.class).getServer().getPluginManager().callEvent(xoreBoardSendPacketEvent);
+                if(xoreBoardSendPacketEvent.isCancelled()) return;
             craftPlayer = Class.forName("org.bukkit.craftbukkit." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".entity.CraftPlayer").cast(xorePlayer.getPlayer());
             Object handle = getFieldInstance(craftPlayer, "entity");
             Object playerConnection = getFieldInstance(handle, "playerConnection");
@@ -146,6 +159,9 @@ public interface Sidebar {
     default void sendPacket(@NotNull org.bukkit.entity.Player player, Object packet) {
         Object craftPlayer;
         try {
+            final XoreBoardSendPacketEvent xoreBoardSendPacketEvent = new XoreBoardSendPacketEvent(getXoreBoard(), player, packet);
+            XoreBoardUtil.getPlugin(XoreBoardUtil.class).getServer().getPluginManager().callEvent(xoreBoardSendPacketEvent);
+                if(xoreBoardSendPacketEvent.isCancelled()) return;
             craftPlayer = Class.forName("org.bukkit.craftbukkit." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".entity.CraftPlayer").cast(player);
             Object handle = getFieldInstance(craftPlayer, "entity");
             Object playerConnection = getFieldInstance(handle, "playerConnection");

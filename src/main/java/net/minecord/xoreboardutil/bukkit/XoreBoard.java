@@ -94,6 +94,19 @@ public class XoreBoard {
     }
 
     /**
+     * public XorePlayer getPlayer(@NotNull org.bukkit.entity.Player player)
+     * @param player Player {@link org.bukkit.entity.Player}
+     * @return XorePlayer
+     */
+
+    public XorePlayer getPlayer(@NotNull org.bukkit.entity.Player player) {
+        if(this.xorePlayers.containsKey(player)) return xorePlayers.get(player);
+        else {
+            this.xorePlayers.put(player, new XorePlayer(this, player));
+                return this.xorePlayers.get(player);
+    }}
+
+    /**
      * public void removePlayer(@NotNull org.bukkit.entity.Player player)
      * @param player Player {@link org.bukkit.entity.Player}
      */
