@@ -1,5 +1,6 @@
 package net.minecord.xoreboardutil.bukkit;
 
+import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -25,13 +26,13 @@ public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
 
         this.randomInt = random.nextInt(100);
         this.scoreboard = org.bukkit.Bukkit.getScoreboardManager().getMainScoreboard();
-        getServer().getLogger().warning("Plugin has been successfully enabled");
+        getServer().getConsoleSender().sendMessage(org.bukkit.ChatColor.DARK_AQUA + "[XoreBoardUtil]" + " " + org.bukkit.ChatColor.WHITE + "Plugin has been" + " " + ChatColor.GREEN + "enabled");
     }
 
     @Override
     public void onDisable() {
             destroy();
-        getServer().getLogger().warning("Plugin has been successfully disabled");
+        getServer().getConsoleSender().sendMessage(org.bukkit.ChatColor.DARK_AQUA + "[XoreBoardUtil]" + " " + org.bukkit.ChatColor.WHITE + "Plugin has been" + " " + ChatColor.RED + "disabled");
     }
 
     /**
@@ -85,8 +86,8 @@ public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
 
     public void removeXoreBoard(@NotNull String boardName) {
         if(this.xoreBoards.containsKey(boardName)) return;
-        getServer().getLogger().warning("Removing XoreBoard(" + boardName + ") with ID(" + getXoreBoard(boardName).getID() + ")");
-        getXoreBoard(boardName).destroy();
+        getServer().getConsoleSender().sendMessage(org.bukkit.ChatColor.DARK_AQUA + "[XoreBoardUtil]" + " " + org.bukkit.ChatColor.WHITE + "Removing XoreBoard with name:" + " " + ChatColor.YELLOW + boardName);
+                getXoreBoard(boardName).destroy();
         this.xoreBoards.remove(boardName);
     }
 
