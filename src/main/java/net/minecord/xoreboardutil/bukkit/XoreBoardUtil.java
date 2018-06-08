@@ -9,205 +9,193 @@ import java.util.Random;
 
 public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
 
-    private static XoreBoardUtil xoreBoardUtil;
+    private static HashMap<String, XoreBoard> xoreBoards = new HashMap<String, XoreBoard>();
+    private static org.bukkit.scoreboard.Objective objective;
+    private static org.bukkit.scoreboard.Scoreboard scoreboard;
+    private static org.bukkit.scoreboard.Team.OptionStatus nameTag, collisions;
 
-    private HashMap<String, XoreBoard> xoreBoards = new HashMap<String, XoreBoard>();
-    private org.bukkit.scoreboard.Objective objective;
-    private org.bukkit.scoreboard.Scoreboard scoreboard;
-    private org.bukkit.scoreboard.Team.OptionStatus nameTag, collisions;
-
-    private int name, iterator, randomInt = 0;
-    private Random random = new Random();
+    private static int name, iterator, randomInt = 0;
+    private static Random random = new Random();
 
     @Override
     public void onEnable() {
 
-        xoreBoardUtil = this;
-
-        this.randomInt = random.nextInt(100);
-        this.scoreboard = org.bukkit.Bukkit.getScoreboardManager().getMainScoreboard();
-        getServer().getConsoleSender().sendMessage(org.bukkit.ChatColor.DARK_AQUA + "[XoreBoardUtil]" + " " + org.bukkit.ChatColor.WHITE + "Plugin has been" + " " + ChatColor.GREEN + "enabled");
+        randomInt = random.nextInt(100);
+        scoreboard = org.bukkit.Bukkit.getScoreboardManager().getMainScoreboard();
+        org.bukkit.Bukkit.getServer().getConsoleSender().sendMessage(org.bukkit.ChatColor.DARK_AQUA + "[XoreBoardUtil]" + " " + org.bukkit.ChatColor.WHITE + "Plugin has been" + " " + ChatColor.GREEN + "enabled");
     }
 
     @Override
     public void onDisable() {
             destroy();
-        getServer().getConsoleSender().sendMessage(org.bukkit.ChatColor.DARK_AQUA + "[XoreBoardUtil]" + " " + org.bukkit.ChatColor.WHITE + "Plugin has been" + " " + ChatColor.RED + "disabled");
+        org.bukkit.Bukkit.getServer().getConsoleSender().sendMessage(org.bukkit.ChatColor.DARK_AQUA + "[XoreBoardUtil]" + " " + org.bukkit.ChatColor.WHITE + "Plugin has been" + " " + ChatColor.RED + "disabled");
     }
 
     /**
-     * public XoreBoard getXoreBoard()
+     * public static XoreBoard getXoreBoard()
      * @return XoreBoard
      */
 
     @NotNull
-    public XoreBoard getXoreBoard() {
+    public static XoreBoard getXoreBoard() {
         return getXoreBoard(name ++ + "");
     }
 
     /**
-     * public XoreBoard getXoreBoard(@NotNull String boardName)
+     * public static XoreBoard getXoreBoard(@NotNull String boardName)
      * @param boardName String {@link String}
      * @return XoreBoard
      */
 
     @NotNull
-    public XoreBoard getXoreBoard(@NotNull String boardName) {
-        if(this.xoreBoards.containsKey(boardName)) return this.xoreBoards.get(boardName);
+    public static XoreBoard getXoreBoard(@NotNull String boardName) {
+        if(xoreBoards.containsKey(boardName)) return xoreBoards.get(boardName);
         else return createXoreBoard(boardName);
     }
 
     /**
-     * public XoreBoard getNextXoreBoard()
+     * public static XoreBoard getNextXoreBoard()
      * @return XoreBoard
      */
 
     @NotNull
-    public XoreBoard getNextXoreBoard() {
+    public static XoreBoard getNextXoreBoard() {
         return getXoreBoard(name ++ + "");
     }
 
     /**
-     * public XoreBoard createXoreBoard(@NotNull String boardName)
+     * public static XoreBoard createXoreBoard(@NotNull String boardName)
      * @param boardName String {@link String}
      * @return XoreBoard
      */
 
     @NotNull
-    public XoreBoard createXoreBoard(@NotNull String boardName) {
-        if(this.xoreBoards.containsKey(boardName)) return this.xoreBoards.get(boardName);
-        else return this.xoreBoards.put(boardName, new XoreBoard(getScoreboard(), this.randomInt + "." + getRandomPacketID(), boardName));
-    }
+    public static XoreBoard createXoreBoard(@NotNull String boardName) {
+        if(xoreBoards.containsKey(boardName)) return xoreBoards.get(boardName);
+        else {
+            xoreBoards.put(boardName, new XoreBoard(scoreboard, randomInt + "." + getRandomPacketID(), boardName));
+            return xoreBoards.get(boardName);
+    }}
 
     /**
-     * public void removeXoreBoard(@NotNull String boardName)
+     * public static void removeXoreBoard(@NotNull String boardName)
      * @param boardName String {@link String}
      */
 
-    public void removeXoreBoard(@NotNull String boardName) {
-        if(this.xoreBoards.containsKey(boardName)) return;
-        getServer().getConsoleSender().sendMessage(org.bukkit.ChatColor.DARK_AQUA + "[XoreBoardUtil]" + " " + org.bukkit.ChatColor.WHITE + "Removing XoreBoard with name:" + " " + ChatColor.YELLOW + boardName);
+    public static void removeXoreBoard(@NotNull String boardName) {
+        if(xoreBoards.containsKey(boardName)) return;
+        org.bukkit.Bukkit.getServer().getConsoleSender().sendMessage(org.bukkit.ChatColor.DARK_AQUA + "[XoreBoardUtil]" + " " + org.bukkit.ChatColor.WHITE + "Removing XoreBoard with name:" + " " + ChatColor.YELLOW + boardName);
                 getXoreBoard(boardName).destroy();
-        this.xoreBoards.remove(boardName);
+        xoreBoards.remove(boardName);
     }
 
     /**
-     * public void removeXoreBoard(@NotNull String boardName)
+     * public static void removeXoreBoard(@NotNull String boardName)
      * @param xoreBoard XoreBoard {@link String}
      */
 
-    public void removeXoreBoard(@NotNull XoreBoard xoreBoard) {
+    public static void removeXoreBoard(@NotNull XoreBoard xoreBoard) {
         removeXoreBoard(xoreBoard.getName());
     }
 
     /**
-     * public HashMap<String, XoreBoard> getXoreBoards()
+     * public static HashMap<String, XoreBoard> getXoreBoards()
      * @return HashMap<String, XoreBoard>
      */
 
     @org.jetbrains.annotations.Contract(pure = true)
-    public HashMap<String, XoreBoard> getXoreBoards() {
-        return this.xoreBoards;
+    public static HashMap<String, XoreBoard> getXoreBoards() {
+        return xoreBoards;
     }
 
     /**
-     * public org.bukkit.scoreboard.Scoreboard getScoreboard()
+     * public static org.bukkit.scoreboard.Scoreboard getScoreboard()
      * @return org.bukkit.scoreboard.Scoreboard
      */
 
-    public org.bukkit.scoreboard.Scoreboard getScoreboard() {
-        return this.scoreboard;
+    public static org.bukkit.scoreboard.Scoreboard getScoreboard() {
+        return scoreboard;
     }
 
     /**
-     * public void setCollisionsRule(@NotNull org.bukkit.scoreboard.Team.OptionStatus value)
+     * public static void setCollisionsRule(@NotNull org.bukkit.scoreboard.Team.OptionStatus value)
      * @param value OptionStatus {@link org.bukkit.scoreboard.Team.OptionStatus}
      */
 
-    public void setCollisionsRule(@NotNull org.bukkit.scoreboard.Team.OptionStatus value) {
-        this.collisions = value;
-        for(org.bukkit.scoreboard.Team team : this.scoreboard.getTeams()) team.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, value);
+    public static void setCollisionsRule(@NotNull org.bukkit.scoreboard.Team.OptionStatus value) {
+        collisions = value;
+        for(org.bukkit.scoreboard.Team team : scoreboard.getTeams()) team.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, value);
     }
 
-    public void disableCollisionsRule() {
-        this.collisions = org.bukkit.scoreboard.Team.OptionStatus.NEVER;
-        for(org.bukkit.scoreboard.Team team : this.scoreboard.getTeams()) team.setOption(org.bukkit.scoreboard.Team.Option.NAME_TAG_VISIBILITY, org.bukkit.scoreboard.Team.OptionStatus.NEVER);
+    public static void disableCollisionsRule() {
+        collisions = org.bukkit.scoreboard.Team.OptionStatus.NEVER;
+        for(org.bukkit.scoreboard.Team team : scoreboard.getTeams()) team.setOption(org.bukkit.scoreboard.Team.Option.NAME_TAG_VISIBILITY, org.bukkit.scoreboard.Team.OptionStatus.NEVER);
     }
 
     /**
-     * public void setBellowName(@NotNull String displayName)
+     * public static void setBellowName(@NotNull String displayName)
      * @param displayName String {@link String}
      */
 
-    public void setBellowName(@NotNull String displayName) {
-        this.objective = this.scoreboard.getObjective(org.bukkit.scoreboard.DisplaySlot.BELOW_NAME);
-        if(this.objective == null) {
-            this.objective = this.scoreboard.registerNewObjective("bellow", "name");
-                this.objective.setDisplaySlot(org.bukkit.scoreboard.DisplaySlot.BELOW_NAME);
-                    this.objective.setDisplayName(org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName));
+    public static void setBellowName(@NotNull String displayName) {
+        objective = scoreboard.getObjective(org.bukkit.scoreboard.DisplaySlot.BELOW_NAME);
+        if(objective == null) {
+            objective = scoreboard.registerNewObjective("bellow", "name");
+                objective.setDisplaySlot(org.bukkit.scoreboard.DisplaySlot.BELOW_NAME);
+                    objective.setDisplayName(org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName));
         }
-        else this.objective.setDisplayName(org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName));
+        else objective.setDisplayName(org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName));
     }
 
     /**
-     * public void updateBellowName(@NotNull org.bukkit.entity.Player player, int value)
+     * public static void updateBellowName(@NotNull org.bukkit.entity.Player player, int value)
      * @param player Player {@link org.bukkit.entity.Player}
      * @param value int {@link Integer}
      */
 
-    public void updateBellowName(@NotNull org.bukkit.entity.Player player, int value) {
-        if(this.objective == null) return;
-        this.scoreboard.getObjective(org.bukkit.scoreboard.DisplaySlot.BELOW_NAME).getScore(player.getPlayer()).setScore(value);
+    public static void updateBellowName(@NotNull org.bukkit.entity.Player player, int value) {
+        if(objective == null) return;
+        scoreboard.getObjective(org.bukkit.scoreboard.DisplaySlot.BELOW_NAME).getScore(player.getPlayer()).setScore(value);
     }
 
     /**
-     * public org.bukkit.scoreboard.Team getTeam(@NotNull String teamName)
+     * public static org.bukkit.scoreboard.Team getTeam(@NotNull String teamName)
      * @param teamName String {@link String}
      * @return org.bukkit.scoreboard.Team
      */
 
-    public org.bukkit.scoreboard.Team getTeam(@NotNull String teamName) {
-        org.bukkit.scoreboard.Team team = this.scoreboard.getTeam(teamName) != null ? this.scoreboard.getTeam(teamName) : this.scoreboard.registerNewTeam(teamName);
-        if(this.nameTag == null) team.setOption(org.bukkit.scoreboard.Team.Option.NAME_TAG_VISIBILITY, this.nameTag);
-            if(this.collisions == null) team.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, this.collisions);
+    public static org.bukkit.scoreboard.Team getTeam(@NotNull String teamName) {
+        org.bukkit.scoreboard.Team team = scoreboard.getTeam(teamName) != null ? scoreboard.getTeam(teamName) : scoreboard.registerNewTeam(teamName);
+        if(nameTag == null) team.setOption(org.bukkit.scoreboard.Team.Option.NAME_TAG_VISIBILITY, nameTag);
+            if(collisions == null) team.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, collisions);
         return team;
     }
 
     /**
-     * public void setNameTagVisibility(@NotNull org.bukkit.scoreboard.Team.OptionStatus value)
+     * public static void setNameTagVisibility(@NotNull org.bukkit.scoreboard.Team.OptionStatus value)
      * @param value org.bukkit.scoreboard.Team.OptionStatus {@link org.bukkit.scoreboard.Team.OptionStatus}
      */
 
-    public void setNameTagVisible(@NotNull org.bukkit.scoreboard.Team.OptionStatus value) {
-        this.nameTag = value;
-        for(org.bukkit.scoreboard.Team team : this.scoreboard.getTeams()) team.setOption(org.bukkit.scoreboard.Team.Option.NAME_TAG_VISIBILITY, value);
+    public static void setNameTagVisible(@NotNull org.bukkit.scoreboard.Team.OptionStatus value) {
+        nameTag = value;
+        for(org.bukkit.scoreboard.Team team : scoreboard.getTeams()) team.setOption(org.bukkit.scoreboard.Team.Option.NAME_TAG_VISIBILITY, value);
     }
 
-    public void destroy() {
-        if(this.scoreboard != null) {
-            for(org.bukkit.scoreboard.Team team : this.scoreboard.getTeams()) {
+    public static void destroy() {
+        if(scoreboard != null) {
+            for(org.bukkit.scoreboard.Team team : scoreboard.getTeams()) {
                 for(String entryName : team.getEntries()) team.removeEntry(entryName);
         }}
 
-        ArrayList<XoreBoard> xoreBoards = new ArrayList<XoreBoard>(this.xoreBoards.values());
+        ArrayList<XoreBoard> xoreBoards = new ArrayList<XoreBoard>(getXoreBoards().values());
         for(XoreBoard xoreBoard : xoreBoards) removeXoreBoard(xoreBoard);
     }
 
     /**
-     * private int getRandomPacketID()
+     * private static int getRandomPacketID()
      * @return int
      */
 
-    private int getRandomPacketID() {
-        return this.iterator ++;
-    }
-
-    /**
-     * public static XoreBoardUtil getInstance()
-     * @return XoreBoardUtil
-     */
-
-    @NotNull
-    public static XoreBoardUtil getInstance() {
-        return xoreBoardUtil;
+    private static int getRandomPacketID() {
+        return iterator ++;
 }}
