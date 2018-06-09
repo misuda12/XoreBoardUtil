@@ -138,6 +138,7 @@ public interface Sidebar {
      */
 
     default void sendPacket(@NotNull XorePlayer xorePlayer, Object packet) {
+        if(xorePlayer.getPlayer().isOnline() == false) return;
         try {
             final XoreBoardSendPacketEvent xoreBoardSendPacketEvent = new XoreBoardSendPacketEvent(getXoreBoard(), xorePlayer.getPlayer(), packet);
             XoreBoardUtil.getPlugin(XoreBoardUtil.class).getServer().getPluginManager().callEvent(xoreBoardSendPacketEvent);
@@ -156,12 +157,12 @@ public interface Sidebar {
      */
 
     default void sendPacket(@NotNull org.bukkit.entity.Player player, Object packet) {
-        Object craftPlayer;
+        if(player.isOnline() == false) return;
         try {
             final XoreBoardSendPacketEvent xoreBoardSendPacketEvent = new XoreBoardSendPacketEvent(getXoreBoard(), player, packet);
             XoreBoardUtil.getPlugin(XoreBoardUtil.class).getServer().getPluginManager().callEvent(xoreBoardSendPacketEvent);
                 if(xoreBoardSendPacketEvent.isCancelled()) return;
-            craftPlayer = Class.forName("org.bukkit.craftbukkit." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".entity.CraftPlayer").cast(player);
+            Object craftPlayer = Class.forName("org.bukkit.craftbukkit." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".entity.CraftPlayer").cast(player);
             Object handle = getFieldInstance(craftPlayer, "entity");
             Object playerConnection = getFieldInstance(handle, "playerConnection");
             invokeMethod(playerConnection, "sendPacket", new Class[] {Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".Packet")}, packet);
