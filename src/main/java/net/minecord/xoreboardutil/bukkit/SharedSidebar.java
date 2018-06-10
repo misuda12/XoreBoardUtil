@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
-public class XoreBoardSharedSidebar implements Sidebar {
+public class SharedSidebar implements Sidebar {
 
     private @NotNull XoreBoard xoreBoard;
     private String displayName;
@@ -17,7 +17,7 @@ public class XoreBoardSharedSidebar implements Sidebar {
 
     private boolean showedStatus = false;
 
-    public XoreBoardSharedSidebar(@NotNull XoreBoard xoreBoard) {
+    public SharedSidebar(@NotNull XoreBoard xoreBoard) {
         this.xoreBoard = xoreBoard;
 
         this.displayName = (org.bukkit.ChatColor.translateAlternateColorCodes('&', xoreBoard.getName())).length() > 32 ? (org.bukkit.ChatColor.translateAlternateColorCodes('&', xoreBoard.getName())).substring(0, 32) : (org.bukkit.ChatColor.translateAlternateColorCodes('&', xoreBoard.getName()));
@@ -119,7 +119,7 @@ public class XoreBoardSharedSidebar implements Sidebar {
                     this.showedStatus = false;
 
                     if(xorePlayer.getPreviousSidebar() != null) {
-                        if(xorePlayer.getPreviousSidebar() instanceof XoreBoardPrivateSidebar && xorePlayer.getPreviousSidebar().isShowed()) {
+                        if(xorePlayer.getPreviousSidebar() instanceof PrivateSidebar && xorePlayer.getPreviousSidebar().isShowed()) {
                             xorePlayer.setPreviousSidebar(this);
                                 xorePlayer.getPrivateSidebar().showSidebar();
                     }} else xorePlayer.setPreviousSidebar(this);
@@ -142,7 +142,7 @@ public class XoreBoardSharedSidebar implements Sidebar {
             sendPacket(xorePlayer, prepareVanillaPacket("PacketPlayOutScoreboardObjective", xorePlayer.getID(), null, null, 1));
 
             if(xorePlayer.getPreviousSidebar() != null) {
-                if(xorePlayer.getPreviousSidebar() instanceof XoreBoardPrivateSidebar && xorePlayer.getPreviousSidebar().isShowed()) {
+                if(xorePlayer.getPreviousSidebar() instanceof PrivateSidebar && xorePlayer.getPreviousSidebar().isShowed()) {
                         xorePlayer.setPreviousSidebar(this);
                             xorePlayer.getPrivateSidebar().showSidebar();
             }} else xorePlayer.setPreviousSidebar(this);

@@ -20,7 +20,7 @@ public class XoreBoard {
     private HashMap<org.bukkit.entity.Player, XorePlayer> xorePlayers = new HashMap<org.bukkit.entity.Player, XorePlayer>();
 
     @Nullable
-    private XoreBoardSharedSidebar sharedSidebar;
+    private SharedSidebar sharedSidebar;
 
     XoreBoard(org.bukkit.scoreboard.Scoreboard scoreboard, @NotNull String ID, @NotNull String name) {
         this.scoreboard = scoreboard;
@@ -137,13 +137,13 @@ public class XoreBoard {
     }}
 
     /**
-     * public XoreBoardSharedSidebar getSidebar()
-     * @return XoreBoardSharedSidebar
+     * public SharedSidebar getSidebar()
+     * @return SharedSidebar
      */
 
-    public XoreBoardSharedSidebar getSharedSidebar() {
-        if(this.sharedSidebar == null) this.sharedSidebar = new XoreBoardSharedSidebar(this);
-        return ((XoreBoardSharedSidebar) this.sharedSidebar);
+    public SharedSidebar getSharedSidebar() {
+        if(this.sharedSidebar == null) this.sharedSidebar = new SharedSidebar(this);
+        return ((SharedSidebar) this.sharedSidebar);
     }
 
     /**

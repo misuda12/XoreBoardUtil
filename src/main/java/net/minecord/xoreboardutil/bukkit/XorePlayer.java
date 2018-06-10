@@ -13,7 +13,7 @@ public class XorePlayer {
     private @NotNull final org.bukkit.entity.Player player;
 
     private @Nullable Sidebar previousSidebar;
-    private XoreBoardPrivateSidebar privateSidebar;
+    private PrivateSidebar privateSidebar;
 
     private boolean sharedSidebar = false;
 
@@ -21,16 +21,16 @@ public class XorePlayer {
         this.xoreBoard = xoreBoard;
         this.player = player;
 
-        this.privateSidebar = new XoreBoardPrivateSidebar(getXoreBoard(), this);
+        this.privateSidebar = new PrivateSidebar(getXoreBoard(), this);
     }
 
     /**
-     * public XoreBoardPrivateSidebar getPrivateSidebar()
-     * @return XoreBoardPrivateSidebar
+     * public PrivateSidebar getPrivateSidebar()
+     * @return PrivateSidebar
      */
 
     @NotNull
-    public XoreBoardPrivateSidebar getPrivateSidebar() {
+    public PrivateSidebar getPrivateSidebar() {
         return this.privateSidebar;
     }
 
