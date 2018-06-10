@@ -1,6 +1,5 @@
 package net.minecord.xoreboardutil.bukkit;
 
-import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -22,13 +21,13 @@ public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
 
         randomInt = random.nextInt(100);
         scoreboard = org.bukkit.Bukkit.getScoreboardManager().getMainScoreboard();
-        org.bukkit.Bukkit.getServer().getConsoleSender().sendMessage(org.bukkit.ChatColor.DARK_AQUA + "[XoreBoardUtil]" + " " + org.bukkit.ChatColor.WHITE + "Plugin has been" + " " + ChatColor.GREEN + "enabled");
+        org.bukkit.Bukkit.getServer().getConsoleSender().sendMessage(org.bukkit.ChatColor.DARK_AQUA + "[XoreBoardUtil]" + " " + org.bukkit.ChatColor.WHITE + "Plugin has been" + " " + org.bukkit.ChatColor.GREEN + "enabled");
     }
 
     @Override
     public void onDisable() {
             destroy();
-        org.bukkit.Bukkit.getServer().getConsoleSender().sendMessage(org.bukkit.ChatColor.DARK_AQUA + "[XoreBoardUtil]" + " " + org.bukkit.ChatColor.WHITE + "Plugin has been" + " " + ChatColor.RED + "disabled");
+        org.bukkit.Bukkit.getServer().getConsoleSender().sendMessage(org.bukkit.ChatColor.DARK_AQUA + "[XoreBoardUtil]" + " " + org.bukkit.ChatColor.WHITE + "Plugin has been" + " " + org.bukkit.ChatColor.RED + "disabled");
     }
 
     /**
@@ -84,7 +83,7 @@ public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
 
     public static void removeXoreBoard(@NotNull String boardName) {
         if(xoreBoards.containsKey(boardName)) return;
-        org.bukkit.Bukkit.getServer().getConsoleSender().sendMessage(org.bukkit.ChatColor.DARK_AQUA + "[XoreBoardUtil]" + " " + org.bukkit.ChatColor.WHITE + "Removing XoreBoard with name:" + " " + ChatColor.YELLOW + boardName);
+        org.bukkit.Bukkit.getServer().getConsoleSender().sendMessage(org.bukkit.ChatColor.DARK_AQUA + "[XoreBoardUtil]" + " " + org.bukkit.ChatColor.WHITE + "Removing XoreBoard with name:" + " " + org.bukkit.ChatColor.YELLOW + boardName);
                 getXoreBoard(boardName).destroy();
         xoreBoards.remove(boardName);
     }

@@ -193,7 +193,6 @@ public interface Sidebar {
             Field field = packet.getClass().getDeclaredField(key);
                 field.setAccessible(true);
                     field.set(packet, value);
-                    System.out.println(key + "/" + value.toString());
         } catch(NoSuchFieldException | IllegalAccessException ignored) {}
     }
 
