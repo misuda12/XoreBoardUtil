@@ -124,11 +124,7 @@ public class SharedSidebar implements Sidebar {
                                 xorePlayer.getPrivateSidebar().showSidebar();
                     }} else xorePlayer.setPreviousSidebar(this);
                     xorePlayer.setShowedSharedSidebar(false);
-                    return;
-            }
-            showSidebar(xorePlayer);
-                hideSidebar(xorePlayer);
-        }});
+        }}});
     }
 
     /**
@@ -147,11 +143,7 @@ public class SharedSidebar implements Sidebar {
                             xorePlayer.getPrivateSidebar().showSidebar();
             }} else xorePlayer.setPreviousSidebar(this);
             xorePlayer.setShowedSharedSidebar(false);
-            return;
-        }
-        showSidebar(xorePlayer);
-            hideSidebar(xorePlayer);
-    }
+    }}
 
     @Override
     public void showSidebar() {
@@ -165,11 +157,7 @@ public class SharedSidebar implements Sidebar {
 
                     xorePlayer.setShowedSharedSidebar(true);
                     this.showedStatus = true;
-                    return;
-                }
-                hideSidebar();
-                    showSidebar();
-        }});
+        }}});
     }
 
     /**
@@ -186,11 +174,7 @@ public class SharedSidebar implements Sidebar {
             this.lineKeys.forEach((lineKey, value) -> sendPacket(xorePlayer, prepareVanillaPacket("PacketPlayOutScoreboardScore", (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey)).substring(0, 48), xorePlayer.getID(), value, XoreBoard.XoreBoardPackets.EnumScoreboardAction.CHANGE.toNamespace())));
 
             xorePlayer.setShowedSharedSidebar(true);
-            return;
-        }
-        hideSidebar(xorePlayer);
-            showSidebar(xorePlayer);
-    }
+    }}
 
     @Override
     public boolean isShowed() {
