@@ -119,7 +119,7 @@ public class SharedSidebar implements Sidebar {
                     this.showedStatus = false;
 
                     if(xorePlayer.getPreviousSidebar() != null) {
-                        if(xorePlayer.getPreviousSidebar() instanceof PrivateSidebar && xorePlayer.getPreviousSidebar().isShowed()) {
+                        if(xorePlayer.getPreviousSidebar() instanceof PrivateSidebar) {
                             xorePlayer.setPreviousSidebar(this);
                                 xorePlayer.getPrivateSidebar().showSidebar();
                     }} else xorePlayer.setPreviousSidebar(this);
@@ -142,7 +142,7 @@ public class SharedSidebar implements Sidebar {
             sendPacket(xorePlayer, prepareVanillaPacket("PacketPlayOutScoreboardObjective", xorePlayer.getID(), null, null, 1));
 
             if(xorePlayer.getPreviousSidebar() != null) {
-                if(xorePlayer.getPreviousSidebar() instanceof PrivateSidebar && xorePlayer.getPreviousSidebar().isShowed()) {
+                if(xorePlayer.getPreviousSidebar() instanceof PrivateSidebar) {
                         xorePlayer.setPreviousSidebar(this);
                             xorePlayer.getPrivateSidebar().showSidebar();
             }} else xorePlayer.setPreviousSidebar(this);
