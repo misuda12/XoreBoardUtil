@@ -5,7 +5,7 @@
     <groupId>net.minecord</groupId>
     <artifactId>xoreboardutil</artifactId>
     <packaging>pom</packaging>
-    <version>LATEST</version>
+    <version>1.12.2</version>
 
     <build>
         <plugins>

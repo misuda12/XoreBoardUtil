@@ -141,6 +141,7 @@ public class PrivateSidebar implements Sidebar {
             this.lineKeys.forEach((lineKey, value) -> sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardScore", (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey)).length() > 48 ? (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey)).substring(0, 48) : (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey)), getXorePlayer().getID(), value, XoreBoard.XoreBoardPackets.EnumScoreboardAction.CHANGE.toNamespace())));
 
             this.showedStatus = true;
+            getXorePlayer().setShowedSharedSidebar(false);
     }}
 
     @Override
