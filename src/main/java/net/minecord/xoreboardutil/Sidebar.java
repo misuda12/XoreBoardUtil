@@ -236,7 +236,7 @@ public interface Sidebar {
     class IChatBaseComponentConverter {
         public static Object toIChatBaseComponent(@NotNull String message) {
             try {
-                Method method = Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".IChatBaseComponent").getDeclaredMethod("a", String.class);
+                Method method = Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".IChatBaseComponent$ChatSerializer").getDeclaredMethod("a", String.class);
                 method.setAccessible(true);
                 return method.invoke(null, "{\"text\":\"" + org.bukkit.ChatColor.translateAlternateColorCodes('&', message) + "\"}");
             }
