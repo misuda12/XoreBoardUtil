@@ -103,14 +103,14 @@ public class PrivateSidebar implements Sidebar {
     public void clearLine(@NotNull String lineKey) {
         if(getXorePlayer().getPlayer().isOnline() == false) return;
         if(this.lineKeys.containsKey(lineKey)) {
-            if(getXorePlayer().hasShowedShared() == false && isShowed()) sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardScore", (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey)).length() > 48 ? (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey)).substring(0, 48) : (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey)), getXorePlayer().getID(), 0, XoreBoard.XoreBoardPackets.EnumScoreboardAction.REMOVE.toNamespace()));
+            if(getXorePlayer().hasShowedShared() == false && isShowed()) sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardScore", (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey)).length() > 48 ? (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey).substring(0, 48)) : (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey)), getXorePlayer().getID(), 0, XoreBoard.XoreBoardPackets.EnumScoreboardAction.REMOVE.toNamespace()));
     }}
 
     @Override
     public void clearLines() {
         if(getXorePlayer().getPlayer().isOnline() == false) return;
         this.lineKeys.forEach((lineKey, value) -> {
-            if(getXorePlayer().hasShowedShared() == false && isShowed()) sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardScore", (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey)).length() > 48 ? (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey)).substring(0, 48) : (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey)), getXorePlayer().getID(), 0, XoreBoard.XoreBoardPackets.EnumScoreboardAction.REMOVE.toNamespace()));
+            if(getXorePlayer().hasShowedShared() == false && isShowed()) sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardScore", (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey)).length() > 48 ? (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey).substring(0, 48)) : (org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey)), getXorePlayer().getID(), 0, XoreBoard.XoreBoardPackets.EnumScoreboardAction.REMOVE.toNamespace()));
         });
 
         this.lineKeys.clear();

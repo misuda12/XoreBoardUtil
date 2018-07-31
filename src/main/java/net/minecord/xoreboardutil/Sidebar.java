@@ -1,5 +1,6 @@
 package net.minecord.xoreboardutil;
 
+import lombok.Generated;
 import net.minecord.xoreboardutil.bukkit.XoreBoard;
 import net.minecord.xoreboardutil.bukkit.XoreBoardUtil;
 import net.minecord.xoreboardutil.bukkit.XorePlayer;
@@ -124,10 +125,10 @@ public interface Sidebar {
         try {
             outputObject = Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + "." + packetName).newInstance();
             for(@NotNull Field field : getDeclaredFields(Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + "." + packetName))) {
-                rewriteField(outputObject, field.getName(), objects[objectIndex]);
+                if(field.getType().getName().contains("IChatBaseComponent") || field.getType().getName().endsWith("IChatBaseComponent")) rewriteField(outputObject, field.getName(), IChatBaseComponentConverter.toIChatBaseComponent((String) objects[objectIndex]));
+                else rewriteField(outputObject, field.getName(), objects[objectIndex]);
                     objectIndex++;
-            }
-        } catch(ClassNotFoundException | IllegalAccessException | InstantiationException ignored) {}
+        }} catch(@NotNull final ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException ignored) {}
         return outputObject;
     }
 
@@ -229,4 +230,18 @@ public interface Sidebar {
 
     default Field getDeclaredField(List<Field> fields, @NotNull String fieldName) {
         return fields.stream().filter(field -> field.getName().equalsIgnoreCase(fieldName)).findFirst().orElse(null);
-}}
+    }
+
+    @Generated
+    class IChatBaseComponentConverter {
+        public static Object toIChatBaseComponent(@NotNull String message) {
+            try {
+                Method method = Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".IChatBaseComponent").getDeclaredMethod("a", String.class);
+                method.setAccessible(true);
+                return method.invoke(null, "{\"text\":\"" + org.bukkit.ChatColor.translateAlternateColorCodes('&', message) + "\"}");
+            }
+            catch(final @NotNull Throwable throwable) {
+                throwable.printStackTrace();
+            }
+            return null;
+}}}
