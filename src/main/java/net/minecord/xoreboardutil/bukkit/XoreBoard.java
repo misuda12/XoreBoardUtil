@@ -121,6 +121,8 @@ public class XoreBoard {
                     if(xorePlayer.hasShowedShared()) getSharedSidebar().hideSidebar(xorePlayer);
 
             this.xorePlayers.remove(player);
+
+            player.setScoreboard(org.bukkit.Bukkit.getScoreboardManager().getMainScoreboard());
     }}
 
     /**
@@ -182,7 +184,7 @@ public class XoreBoard {
         java.util.List<org.bukkit.entity.Player> temporary = new ArrayList<org.bukkit.entity.Player>(getPlayers());
         temporary.forEach(this::removePlayer);
 
-        final XoreBoardRemoveEvent xoreBoardRemoveEvent = new XoreBoardRemoveEvent(this);
+        final XoreBoardRemoveEvent xoreBoardRemoveEvent = new XoreBoardRemoveEvent(this.getName());
         XoreBoardUtil.getPlugin(XoreBoardUtil.class).getServer().getPluginManager().callEvent(xoreBoardRemoveEvent);
     }
 
@@ -199,7 +201,7 @@ public class XoreBoard {
 
             public Object toNamespace() {
                 try {
-                    Method method = Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".PacketPlayOutScoreboardScore$EnumScoreboardAction").getDeclaredMethod("valueOf", String.class);
+                    Method method = Integer.parseInt(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1).split("_")[1]) > 12 ? Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".ScoreboardServer$Action").getDeclaredMethod("valueOf", String.class) : Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".PacketPlayOutScoreboardScore$EnumScoreboardAction").getDeclaredMethod("valueOf", String.class);
                     method.setAccessible(true);
                     return method.invoke(null, name());
                 }

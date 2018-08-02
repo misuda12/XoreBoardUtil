@@ -5,7 +5,7 @@
     <groupId>net.minecord</groupId>
     <artifactId>xoreboardutil</artifactId>
     <packaging>pom</packaging>
-    <version>1.12.2</version>
+    <version>1.13</version>
 
     <build>
         <plugins>
@@ -32,41 +32,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <developers>
-
-        <!-- Developer -->
-        <developer>
-            <id>haelexuis</id>
-            <name>FORBIDDEN</name>
-            <url>https://www.haelexuis.eu</url>
-            <organization>minecord.net</organization>
-            <organizationUrl>https://www.minecord.net</organizationUrl>
-
-            <!-- Roles -->
-            <roles>
-                <role>tester</role>
-                <role>architect</role>
-                <role>developer</role>
-            </roles>
-        </developer>
-
-        <!-- Developer -->
-        <developer>
-            <id>misuda12</id>
-            <name>Martin Coplák</name>
-            <email>martin.coplak@gmail.com</email>
-            <organization>minecord.net</organization>
-            <organizationUrl>https://www.minecord.net</organizationUrl>
-
-            <!-- Roles -->
-            <roles>
-                <role>tester</role>
-                <role>architect</role>
-                <role>developer</role>
-            </roles>
-        </developer>
-    </developers>
 
     <repositories>
 

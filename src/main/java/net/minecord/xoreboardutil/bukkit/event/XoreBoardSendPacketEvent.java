@@ -10,15 +10,15 @@ public final class XoreBoardSendPacketEvent extends org.bukkit.event.Event imple
 
     private @NotNull final XoreBoard xoreBoard;
     private @NotNull final org.bukkit.entity.Player player;
-    private Object packet;
+    private Object packetObject;
     private static final org.bukkit.event.HandlerList handlerList = new org.bukkit.event.HandlerList();
 
     private boolean cancelledStatus = false;
 
-    public XoreBoardSendPacketEvent(@NotNull XoreBoard xoreBoard, @NotNull org.bukkit.entity.Player player, @NotNull Object packet) {
+    public XoreBoardSendPacketEvent(@NotNull XoreBoard xoreBoard, @NotNull org.bukkit.entity.Player player, @NotNull Object packetObject) {
         this.xoreBoard = xoreBoard;
         this.player = player;
-        this.packet = packet;
+        this.packetObject = packetObject;
     }
 
     /**
@@ -42,23 +42,24 @@ public final class XoreBoardSendPacketEvent extends org.bukkit.event.Event imple
     }
 
     /**
-     * public Object getPacketObject()
+     * public Object getPacket()
      * @return Object
      */
 
-    public Object getPacketObject() {
-        return this.packet;
+    public Object getPacket() {
+        return this.packetObject;
     }
 
     /**
-     * public Object setPacketObject(@Nullable Object object)
-     * @param object Object {@link Object {@value packet}}
+     * public Object setPacketObject(@Nullable Object packetObject)
+     * @param packetObject Object {@link Object {@value packetObject}}
      * @return Object
      */
 
-    public Object setPacketObject(@Nullable Object object) {
-        this.packet = object;
-        return this.packet;
+    public XoreBoardSendPacketEvent setPacketObject(@Nullable Object packetObject) {
+        if(packetObject != null) this.packetObject = packetObject;
+        else setCancelled(true);
+        return this;
     }
 
     @Override

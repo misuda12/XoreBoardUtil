@@ -7,21 +7,11 @@ import org.jetbrains.annotations.NotNull;
 @Getter
 public final class XoreBoardRemoveEvent extends org.bukkit.event.Event {
 
-    private @NotNull final XoreBoard xoreBoard;
+    private @NotNull final String name;
     private static final org.bukkit.event.HandlerList handlerList = new org.bukkit.event.HandlerList();
 
-    public XoreBoardRemoveEvent(@NotNull XoreBoard xoreBoard) {
-        this.xoreBoard = xoreBoard;
-    }
-
-    /**
-     * public final XoreBoard getXoreBoard()
-     * @return XoreBoard
-     */
-
-    @NotNull
-    public final XoreBoard getXoreBoard() {
-        return this.xoreBoard;
+    public XoreBoardRemoveEvent(@NotNull String name) {
+        this.name = name;
     }
 
     @Override
