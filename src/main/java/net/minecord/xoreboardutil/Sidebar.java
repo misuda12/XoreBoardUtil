@@ -122,7 +122,6 @@ public interface Sidebar {
     default Object prepareVanillaPacket(@NotNull String packetName, Object... objects) {
         int objectIndex = 0;
         Object outputObject = null;
-        System.out.println(Arrays.toString(objects));
         try {
             outputObject = Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + "." + packetName).newInstance();
             for(@NotNull Field field : getDeclaredFields(Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + "." + packetName))) {
