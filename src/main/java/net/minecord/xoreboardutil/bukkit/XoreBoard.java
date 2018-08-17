@@ -4,7 +4,6 @@ import lombok.Getter;
 import net.minecord.xoreboardutil.bukkit.event.XoreBoardCreateEvent;
 import net.minecord.xoreboardutil.bukkit.event.XoreBoardRemoveEvent;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -14,12 +13,10 @@ import java.util.HashMap;
 @Getter
 public class XoreBoard {
 
-    private final org.bukkit.scoreboard.Scoreboard scoreboard;
+    private final @NotNull org.bukkit.scoreboard.Scoreboard scoreboard;
     private @NotNull String ID, name;
 
     private HashMap<org.bukkit.entity.Player, XorePlayer> xorePlayers = new HashMap<org.bukkit.entity.Player, XorePlayer>();
-
-    @Nullable
     private SharedSidebar sharedSidebar;
 
     XoreBoard(org.bukkit.scoreboard.Scoreboard scoreboard, @NotNull String ID, @NotNull String name) {
@@ -31,11 +28,12 @@ public class XoreBoard {
         XoreBoardUtil.getPlugin(XoreBoardUtil.class).getServer().getPluginManager().callEvent(xoreBoardCreateEvent);
 
         if(getEntries() != null && this.xorePlayers.size() > 0) {
-            org.bukkit.Bukkit.getScheduler().runTaskTimerAsynchronously(XoreBoardUtil.getPlugin(XoreBoardUtil.class), () -> {
-                this.getPlayers().forEach(player -> {
-                    if(player.isOnline() == false) this.xorePlayers.remove(player);
-            });
-        }, 0, 20);
+            new org.bukkit.scheduler.BukkitRunnable() {
+
+                @Override
+                public void run() {
+                    getPlayers().stream().filter(player -> player.isOnline() == false).forEach(player -> xorePlayers.remove(player));
+        }}.runTaskTimerAsynchronously(XoreBoardUtil.getPlugin(XoreBoardUtil.class), 0L, 20L);
     }}
 
     /**
@@ -84,7 +82,7 @@ public class XoreBoard {
      */
 
     public void addPlayer(@NotNull org.bukkit.entity.Player player) {
-        if(player.isOnline() == false) return;
+        if(player.isOnline() == false || player == null) return;
         if(this.xorePlayers.containsKey(player)) return;
         player.setScoreboard(this.scoreboard);
 
@@ -114,15 +112,14 @@ public class XoreBoard {
      */
 
     public void removePlayer(@NotNull org.bukkit.entity.Player player) {
-        if(player.isOnline() == false) return;
+        if(player.isOnline() == false || player == null) return;
         if(this.xorePlayers.containsKey(player)) {
             final XorePlayer xorePlayer = this.xorePlayers.get(player);
-                if(xorePlayer.getPrivateSidebar().isShowed()) xorePlayer.getPrivateSidebar().hideSidebar();
-                    if(xorePlayer.hasShowedShared()) getSharedSidebar().hideSidebar(xorePlayer);
+                hideSidebar(player);
 
             this.xorePlayers.remove(player);
 
-            player.setScoreboard(org.bukkit.Bukkit.getScoreboardManager().getMainScoreboard());
+            // player.setScoreboard(org.bukkit.Bukkit.getScoreboardManager().getMainScoreboard());
     }}
 
     /**
@@ -133,9 +130,8 @@ public class XoreBoard {
     public void hideSidebar(@NotNull org.bukkit.entity.Player player) {
         if(player.isOnline() == false) return;
         if(this.xorePlayers.containsKey(player)) {
-            this.xorePlayers.get(player).setPreviousSidebar(null);
-                this.xorePlayers.get(player).getPrivateSidebar().hideSidebar();
-                    getSharedSidebar().hideSidebar(this.xorePlayers.get(player));
+            this.xorePlayers.get(player).getPrivateSidebar().hideSidebar();
+            getSharedSidebar().hideSidebar(this.xorePlayers.get(player));
     }}
 
     /**
@@ -146,6 +142,16 @@ public class XoreBoard {
     public SharedSidebar getSharedSidebar() {
         if(this.sharedSidebar == null) this.sharedSidebar = new SharedSidebar(this);
         return ((SharedSidebar) this.sharedSidebar);
+    }
+
+    /**
+     * public PrivateSidebar getPrivateSidebar(@NotNull org.bukkit.entity.Player player)
+     * @param player Player {@link org.bukkit.entity.Player}
+     * @return PrivateSidebar
+     */
+
+    public PrivateSidebar getPrivateSidebar(@NotNull org.bukkit.entity.Player player) {
+        return getPlayer(player).getPrivateSidebar();
     }
 
     /**
@@ -180,7 +186,6 @@ public class XoreBoard {
 
     public void destroy() {
         getSharedSidebar().clearLines();
-            getSharedSidebar().hideSidebar();
         java.util.List<org.bukkit.entity.Player> temporary = new ArrayList<org.bukkit.entity.Player>(getPlayers());
         temporary.forEach(this::removePlayer);
 
