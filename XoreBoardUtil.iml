@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="minecraft" name="Minecraft">
+      <configuration>
+        <autoDetectTypes>
+          <platformType>SPIGOT</platformType>
+        </autoDetectTypes>
+      </configuration>
+    </facet>
+  </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
@@ -22,27 +31,10 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.guava:guava:21.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.code.gson:gson:2.8.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.yaml:snakeyaml:1.21" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: net.md-5:bungeecord-chat:1.12-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: net.md-5:bungeecord-chat:1.13-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot:1.13-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.bukkit:bukkit:1.13-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.bukkit:craftbukkit:1.13-R0.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.spongepowered:spongeapi:4.1.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: ninja.leaping.configurate:configurate-hocon:3.1.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: com.typesafe:config:1.3.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: ninja.leaping.configurate:configurate-core:3.1.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: com.flowpowered:flow-math:1.0.2" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.spongepowered:plugin-meta:0.1.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.ow2.asm:asm:5.0.3" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: ninja.leaping.configurate:configurate-yaml:3.1.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.code.findbugs:jsr305:1.3.9" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: ninja.leaping.configurate:configurate-gson:3.1.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.inject:guice:4.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.inject:javax.inject:1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: aopalliance:aopalliance:1.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.spongepowered:event-gen-core:1.1.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.slf4j:slf4j-api:1.7.21" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: com.flowpowered:flow-noise:1.0.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.commons:commons-lang3:3.3.2" level="project" />
     <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.16.16" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:15.0" level="project" />
   </component>

@@ -5,7 +5,7 @@
     <groupId>net.minecord</groupId>
     <artifactId>xoreboardutil</artifactId>
     <packaging>pom</packaging>
-    <version>1.13</version>
+    <version>1.13.1</version>
 
     <build>
         <plugins>
@@ -39,12 +39,6 @@
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-
-        <!-- Sponge Repository -->
-        <repository>
-            <id>sponge-repo</id>
-            <url>http://repo.spongepowered.org/maven</url>
         </repository>
     </repositories>
 
@@ -80,15 +74,6 @@
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
             <version>1.13-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- Sponge API -->
-        <dependency>
-            <groupId>org.spongepowered</groupId>
-            <artifactId>spongeapi</artifactId>
-            <version>4.1.0</version>
-            <type>jar</type>
             <scope>provided</scope>
         </dependency>
 

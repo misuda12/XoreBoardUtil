@@ -34,6 +34,7 @@ public class XoreBoard {
                 public void run() {
                     getPlayers().stream().filter(player -> player.isOnline() == false).forEach(player -> xorePlayers.remove(player));
         }}.runTaskTimerAsynchronously(XoreBoardUtil.getPlugin(XoreBoardUtil.class), 0L, 20L);
+        XoreBoardUtil.getPlugin(XoreBoardUtil.class).getLogger().info("Creating new scoreboard: " + name);
     }}
 
     /**
@@ -84,9 +85,13 @@ public class XoreBoard {
     public void addPlayer(@NotNull org.bukkit.entity.Player player) {
         if(player.isOnline() == false || player == null) return;
         if(this.xorePlayers.containsKey(player)) return;
+        XoreBoardUtil.getXoreBoards().forEach((key, xoreBoard) -> {
+            if(key.equals(getID()) == false) {
+                if(xoreBoard.getPlayers().contains(player)) {
+                    xoreBoard.removePlayer(player);
+        }}});
         player.setScoreboard(this.scoreboard);
-
-        final XorePlayer xorePlayer = new XorePlayer(this, player);
+        final @NotNull XorePlayer xorePlayer = new XorePlayer(this, player);
 
         this.xorePlayers.put(player, xorePlayer);
         if(this.sharedSidebar != null) getSharedSidebar().showSidebar(xorePlayer);
