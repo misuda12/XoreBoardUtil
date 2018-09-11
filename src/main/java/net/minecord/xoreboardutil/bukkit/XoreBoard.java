@@ -135,8 +135,8 @@ public class XoreBoard {
     public void hideSidebar(@NotNull org.bukkit.entity.Player player) {
         if(player.isOnline() == false) return;
         if(this.xorePlayers.containsKey(player)) {
-            this.xorePlayers.get(player).getPrivateSidebar().hideSidebar();
-            getSharedSidebar().hideSidebar(this.xorePlayers.get(player));
+            if(getPlayer(player).getPrivateSidebar().isShowed()) this.xorePlayers.get(player).getPrivateSidebar().hideSidebar();
+            if(getPlayer(player).hasShowedShared()) getSharedSidebar().hideSidebar(this.xorePlayers.get(player));
     }}
 
     /**
