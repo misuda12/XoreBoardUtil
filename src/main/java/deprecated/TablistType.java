@@ -1,4 +1,4 @@
-package net.minecord.xoreboardutil;
+package deprecated;
 
 import lombok.Getter;
 
