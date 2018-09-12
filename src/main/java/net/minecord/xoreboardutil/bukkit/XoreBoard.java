@@ -123,7 +123,7 @@ public class XoreBoard {
         if(player.isOnline() == false || player == null) return;
         if(this.xorePlayers.containsKey(player)) {
             final XorePlayer xorePlayer = this.xorePlayers.get(player);
-                hideSidebar(player);
+                // hideSidebar(player);
 
             this.xorePlayers.remove(player);
 

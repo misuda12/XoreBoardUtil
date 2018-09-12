@@ -26,7 +26,7 @@ public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
 
     @Override
     public void onDisable() {
-            destroy();
+        destroy();
         org.bukkit.Bukkit.getServer().getConsoleSender().sendMessage(org.bukkit.ChatColor.DARK_AQUA + "[XoreBoardUtil]" + " " + org.bukkit.ChatColor.WHITE + "Plugin has been" + " " + org.bukkit.ChatColor.RED + "disabled");
     }
 
