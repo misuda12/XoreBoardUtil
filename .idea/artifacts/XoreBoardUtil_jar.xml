@@ -1,8 +1,7 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="XoreBoardUtil:jar">
-    <output-path>$PROJECT_DIR$/.idea/maven/build</output-path>
+    <output-path>$PROJECT_DIR$/target</output-path>
     <root id="archive" name="XoreBoardUtil.jar">
-      <element id="module-output" name="XoreBoardUtilTester" />
       <element id="module-output" name="XoreBoardUtil" />
     </root>
   </artifact>

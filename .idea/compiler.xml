@@ -16,6 +16,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="XoreBoardUtil" target="1.8" />
+      <module name="xoreboardutil.tester" target="1.8" />
       <module name="XoreBoardUtilTester" target="1.8" />
     </bytecodeTargetLevel>
   </component>

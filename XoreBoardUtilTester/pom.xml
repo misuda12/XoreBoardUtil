@@ -61,7 +61,7 @@
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>2.8.2</version>
                 <configuration>
-                    <altDeploymentRepository>internal.repo::default::file://${project.basedir}/../XoreBoardUtil/${project.name}/maven</altDeploymentRepository>
+                    <altDeploymentRepository>internal.repo::default::file://${project.basedir}/../${project.name}/maven</altDeploymentRepository>
                 </configuration>
             </plugin>
 
@@ -100,6 +100,13 @@
     </repositories>
 
     <dependencies>
+
+        <!-- XoreBoardUtil -->
+        <dependency>
+            <groupId>net.minecord</groupId>
+            <artifactId>xoreboardutil</artifactId>
+            <version>1.13.1</version>
+        </dependency>
 
         <!-- Spigot API -->
         <dependency>

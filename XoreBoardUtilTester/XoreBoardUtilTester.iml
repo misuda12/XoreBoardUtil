@@ -35,5 +35,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.bukkit:craftbukkit:1.13.1-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.16.16" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:15.0" level="project" />
+    <orderEntry type="module" module-name="XoreBoardUtil" />
   </component>
 </module>
