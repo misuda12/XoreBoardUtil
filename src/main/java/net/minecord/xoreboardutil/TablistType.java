@@ -1,5 +1,10 @@
 package net.minecord.xoreboardutil;
 
-public class TablistType {
+import lombok.Getter;
+
+@Getter
+public enum  TablistType {
+
+    PRIVATE, SHARED, UNDEFINED
 
 }

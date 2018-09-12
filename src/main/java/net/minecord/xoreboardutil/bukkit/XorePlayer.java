@@ -15,7 +15,7 @@ public class XorePlayer {
     private @Nullable Sidebar previousSidebar;
     private PrivateSidebar privateSidebar;
 
-    private boolean sharedSidebar = false;
+    private boolean showedSharedSidebar = false;
 
     XorePlayer(@NotNull XoreBoard xoreBoard, @NotNull org.bukkit.entity.Player player) {
         this.xoreBoard = xoreBoard;
@@ -40,20 +40,20 @@ public class XorePlayer {
      */
 
     public boolean hasShowedShared() {
-        return this.sharedSidebar;
+        return this.showedSharedSidebar;
     }
 
     /**
      * public boolean setShowedSharedSidebar(boolean sharedSidebar)
-     * @param sharedSidebar boolean {@link Boolean {@value sharedSidebar}}
+     * @param sharedSidebar boolean {@link Boolean {@value showedSharedSidebar}}
      * @return boolean
      */
 
     public boolean setShowedSharedSidebar(boolean sharedSidebar) {
-        this.sharedSidebar = sharedSidebar;
+        this.showedSharedSidebar = sharedSidebar;
         if(sharedSidebar) getXoreBoard().getSharedSidebar().showSidebar(this);
         else getXoreBoard().getSharedSidebar().hideSidebar(this);
-        return this.sharedSidebar;
+        return this.showedSharedSidebar;
     }
 
     /**
@@ -62,6 +62,7 @@ public class XorePlayer {
      */
 
     @Nullable
+    @Deprecated
     public Sidebar getPreviousSidebar() {
         return this.previousSidebar;
     }
@@ -71,6 +72,7 @@ public class XorePlayer {
      * @param previousSidebar Sidebar {@link Sidebar {@value previousSidebar}}
      */
 
+    @Deprecated
     public void setPreviousSidebar(@NotNull Sidebar previousSidebar) {
         this.previousSidebar = previousSidebar;
     }
