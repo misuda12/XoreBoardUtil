@@ -3,10 +3,11 @@
   <groupId>net.minecord</groupId>
   <artifactId>xoreboardutil</artifactId>
   <versioning>
-    <release>1.13</release>
+    <release>1.13.1</release>
     <versions>
       <version>1.13</version>
+      <version>1.13.1</version>
     </versions>
-    <lastUpdated>20180802104226</lastUpdated>
+    <lastUpdated>20180912000400</lastUpdated>
   </versioning>
 </metadata>
