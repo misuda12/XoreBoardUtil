@@ -22,35 +22,6 @@ public final class XoreBoardSendPacketEvent extends org.bukkit.event.Event imple
     }
 
     /**
-     * public final XoreBoard getXoreBoard()
-     * @return XoreBoard
-     */
-
-    @NotNull
-    public final XoreBoard getXoreBoard() {
-        return this.xoreBoard;
-    }
-
-    /**
-     * public final org.bukkit.entity.Player getPlayer()
-     * @return org.bukkit.entity.Player
-     */
-
-    @NotNull
-    public final org.bukkit.entity.Player getPlayer() {
-        return this.player;
-    }
-
-    /**
-     * public Object getPacket()
-     * @return Object
-     */
-
-    public Object getPacket() {
-        return this.packetObject;
-    }
-
-    /**
      * public Object setPacketObject(@Nullable Object packetObject)
      * @param packetObject Object {@link Object {@value packetObject}}
      * @return Object

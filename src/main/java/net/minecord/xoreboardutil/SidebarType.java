@@ -5,6 +5,6 @@ import lombok.Getter;
 @Getter
 public enum SidebarType {
 
-    PRIVATE, SHARED
+    PRIVATE, SHARED, UNDEFINED
 
 }

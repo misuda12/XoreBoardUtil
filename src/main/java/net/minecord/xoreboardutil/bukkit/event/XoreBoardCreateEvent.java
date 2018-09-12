@@ -14,16 +14,6 @@ public final class XoreBoardCreateEvent extends org.bukkit.event.Event {
         this.xoreBoard = xoreBoard;
     }
 
-    /**
-     * public final XoreBoard getXoreBoard()
-     * @return XoreBoard
-     */
-
-    @NotNull
-    public final XoreBoard getXoreBoard() {
-        return this.xoreBoard;
-    }
-
     @Override
     public org.bukkit.event.HandlerList getHandlers() {
         return handlerList;

@@ -24,7 +24,7 @@ public class XoreBoard {
         this.ID = ID;
         this.name = name;
 
-        final XoreBoardCreateEvent xoreBoardCreateEvent = new XoreBoardCreateEvent(this);
+        final @NotNull XoreBoardCreateEvent xoreBoardCreateEvent = new XoreBoardCreateEvent(this);
         XoreBoardUtil.getPlugin(XoreBoardUtil.class).getServer().getPluginManager().callEvent(xoreBoardCreateEvent);
 
         if(getEntries() != null && this.xorePlayers.size() > 0) {
@@ -73,8 +73,11 @@ public class XoreBoard {
      * @param defaultTitle String {@link String {@value name}}
      */
 
-    public void setDefaultTitle(@NotNull String defaultTitle) {
+    @NotNull
+    @org.jetbrains.annotations.Contract(pure = true)
+    public String setDefaultTitle(@NotNull String defaultTitle) {
         this.name = defaultTitle;
+        return this.name;
     }
 
     /**
@@ -104,7 +107,7 @@ public class XoreBoard {
      */
 
     public XorePlayer getPlayer(@NotNull org.bukkit.entity.Player player) {
-        if(this.xorePlayers.containsKey(player)) return xorePlayers.get(player);
+        if(this.xorePlayers.containsKey(player) && player != null) return xorePlayers.get(player);
         else {
             player.setScoreboard(this.scoreboard);
             this.xorePlayers.put(player, new XorePlayer(this, player));
@@ -133,7 +136,7 @@ public class XoreBoard {
      */
 
     public void hideSidebar(@NotNull org.bukkit.entity.Player player) {
-        if(player.isOnline() == false) return;
+        if(player.isOnline() == false || player == null) return;
         if(this.xorePlayers.containsKey(player)) {
             if(getPlayer(player).getPrivateSidebar().isShowed()) this.xorePlayers.get(player).getPrivateSidebar().hideSidebar();
             if(getPlayer(player).hasShowedShared()) getSharedSidebar().hideSidebar(this.xorePlayers.get(player));
