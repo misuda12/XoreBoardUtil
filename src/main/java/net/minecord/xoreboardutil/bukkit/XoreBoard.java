@@ -192,7 +192,7 @@ public class XoreBoard {
     public void destroy() {
         getSharedSidebar().clearLines();
         java.util.List<org.bukkit.entity.Player> temporary = new ArrayList<org.bukkit.entity.Player>(getPlayers());
-        temporary.forEach(this::removePlayer);
+            temporary.forEach(this::removePlayer);
 
         final XoreBoardRemoveEvent xoreBoardRemoveEvent = new XoreBoardRemoveEvent(this.getName());
         XoreBoardUtil.getPlugin(XoreBoardUtil.class).getServer().getPluginManager().callEvent(xoreBoardRemoveEvent);
