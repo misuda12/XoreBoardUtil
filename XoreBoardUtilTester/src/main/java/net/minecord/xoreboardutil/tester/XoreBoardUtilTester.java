@@ -16,14 +16,15 @@ public final class XoreBoardUtilTester extends org.bukkit.plugin.java.JavaPlugin
     @Override
     public void onEnable() {
 
-        getServer().getPluginManager().registerEvents(this, this);
-
         this.xoreBoard = XoreBoardUtil.getNextXoreBoard();
-        @NotNull String defaultTitle = this.xoreBoard.setDefaultTitle("<3 Unicorns, do we ?");
+        getServer().getPluginManager().registerEvents(this, this);
+        @NotNull String defaultTitle = this.xoreBoard.setDefaultTitle("${project.name}");
+        getLogger().info("connected=" + getServer().getOnlinePlayers().size() + 1 + ";adding=0;created=0");
     }
 
     @org.bukkit.event.EventHandler
     public void on(@NotNull final org.bukkit.event.player.PlayerJoinEvent event) {
+        getLogger().info("connected=1;adding=1;created=0");
         this.xoreBoard.addPlayer(event.getPlayer());
         @NotNull HashMap<String, Integer> lines = new HashMap<String, Integer>();
         lines.put("packetID: " + this.xoreBoard.getPlayer(event.getPlayer()).getID(), 1);

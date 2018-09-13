@@ -1,33 +1,52 @@
 package net.minecord.xoreboardutil.bukkit;
 
+import net.minecord.xoreboardutil.bukkit.controller.Controller;
+import net.minecord.xoreboardutil.bukkit.controller.LogController;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+@lombok.Generated
 public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
 
-    private static HashMap<String, XoreBoard> xoreBoards = new HashMap<String, XoreBoard>();
+    @org.jetbrains.annotations.TestOnly
+    private static @NotNull HashMap<String, XoreBoard> xoreBoards = new HashMap<String, XoreBoard>();
+
     private static org.bukkit.scoreboard.Objective objective;
-    private static org.bukkit.scoreboard.Scoreboard scoreboard;
+    private static @NotNull org.bukkit.scoreboard.Scoreboard scoreboard;
     private static org.bukkit.scoreboard.Team.OptionStatus nameTag, collisions;
 
     private static int name, iterator, randomInt = 0;
-    private static Random random = new Random();
+    private static @NotNull Random random = new Random();
+
+    private @Nullable Controller logController = new LogController(this), loggerController = logController, log = logController;
 
     @Override
+    @PostConstruct
     public void onEnable() {
+        continueEnabling(this);
+    }
 
+    /**
+     * private void continueEnabling(@NotNull XoreBoardUtil plugin)
+     * @param plugin XoreBoardUtil {@link XoreBoardUtil}
+     */
+
+    private void continueEnabling(@NotNull XoreBoardUtil plugin) {
         randomInt = random.nextInt(100);
         scoreboard = org.bukkit.Bukkit.getScoreboardManager().getMainScoreboard();
-        org.bukkit.Bukkit.getServer().getConsoleSender().sendMessage(org.bukkit.ChatColor.DARK_AQUA + "[XoreBoardUtil]" + " " + org.bukkit.ChatColor.WHITE + "Plugin has been" + " " + org.bukkit.ChatColor.GREEN + "enabled");
+        getLoggerController().info("Successfully enabled/initialized plugin instance");
     }
 
     @Override
     public void onDisable() {
         destroy();
-        org.bukkit.Bukkit.getServer().getConsoleSender().sendMessage(org.bukkit.ChatColor.DARK_AQUA + "[XoreBoardUtil]" + " " + org.bukkit.ChatColor.WHITE + "Plugin has been" + " " + org.bukkit.ChatColor.RED + "disabled");
+
+        java.lang.Runtime.getRuntime().gc();
+        getLoggerController().info("Plugin has been successfully disabled");
     }
 
     /**
@@ -82,8 +101,8 @@ public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
      */
 
     public static void removeXoreBoard(@NotNull String boardName) {
-        if(xoreBoards.containsKey(boardName)) return;
-        org.bukkit.Bukkit.getServer().getConsoleSender().sendMessage(org.bukkit.ChatColor.DARK_AQUA + "[XoreBoardUtil]" + " " + org.bukkit.ChatColor.WHITE + "Removing XoreBoard with name:" + " " + org.bukkit.ChatColor.YELLOW + boardName);
+        if(xoreBoards.containsKey(boardName) == false) return;
+        getPlugin().getLoggerController().info("Removing XoreBoard: " + boardName);
                 getXoreBoard(boardName).destroy();
         xoreBoards.remove(boardName);
     }
@@ -94,7 +113,7 @@ public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
      */
 
     public static void removeXoreBoard(@NotNull XoreBoard xoreBoard) {
-        removeXoreBoard(xoreBoard.getName());
+        if(xoreBoard != null) removeXoreBoard(xoreBoard.getName());
     }
 
     /**
@@ -122,13 +141,15 @@ public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
      */
 
     public static void setCollisionsRule(@NotNull org.bukkit.scoreboard.Team.OptionStatus value) {
-        collisions = value;
-        for(org.bukkit.scoreboard.Team team : scoreboard.getTeams()) team.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, value);
+        if(value == null) return;
+
+            collisions = value;
+        for(@NotNull org.bukkit.scoreboard.Team team : scoreboard.getTeams()) team.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, value);
     }
 
     public static void disableCollisionsRule() {
         collisions = org.bukkit.scoreboard.Team.OptionStatus.NEVER;
-        for(org.bukkit.scoreboard.Team team : scoreboard.getTeams()) team.setOption(org.bukkit.scoreboard.Team.Option.NAME_TAG_VISIBILITY, org.bukkit.scoreboard.Team.OptionStatus.NEVER);
+        for(@NotNull org.bukkit.scoreboard.Team team : scoreboard.getTeams()) team.setOption(org.bukkit.scoreboard.Team.Option.NAME_TAG_VISIBILITY, org.bukkit.scoreboard.Team.OptionStatus.NEVER);
     }
 
     /**
@@ -137,6 +158,7 @@ public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
      */
 
     public static void setBellowName(@NotNull String displayName) {
+        if(displayName == null) return;
         objective = scoreboard.getObjective(org.bukkit.scoreboard.DisplaySlot.BELOW_NAME);
         if(objective == null) {
             objective = scoreboard.registerNewObjective("bellow", "name");
@@ -153,8 +175,8 @@ public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
      */
 
     public static void updateBellowName(@NotNull org.bukkit.entity.Player player, int value) {
-        if(objective == null) return;
-        scoreboard.getObjective(org.bukkit.scoreboard.DisplaySlot.BELOW_NAME).getScore(player.getPlayer()).setScore(value);
+        if(objective == null || player == null || player.isOnline() == false) return;
+        scoreboard.getObjective(org.bukkit.scoreboard.DisplaySlot.BELOW_NAME).getScore(player).setScore(value);
     }
 
     /**
@@ -176,18 +198,22 @@ public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
      */
 
     public static void setNameTagVisible(@NotNull org.bukkit.scoreboard.Team.OptionStatus value) {
+        if(value == null) return;
+
         nameTag = value;
-        for(org.bukkit.scoreboard.Team team : scoreboard.getTeams()) team.setOption(org.bukkit.scoreboard.Team.Option.NAME_TAG_VISIBILITY, value);
+        for(@NotNull org.bukkit.scoreboard.Team team : scoreboard.getTeams()) team.setOption(org.bukkit.scoreboard.Team.Option.NAME_TAG_VISIBILITY, value);
     }
 
     public static void destroy() {
         if(scoreboard != null) {
-            for(org.bukkit.scoreboard.Team team : scoreboard.getTeams()) {
-                for(String entryName : team.getEntries()) team.removeEntry(entryName);
-        }}
+            for(@NotNull org.bukkit.scoreboard.Team team : scoreboard.getTeams()) {
+                for(@NotNull String entryName : team.getEntries()) {
+                    team.removeEntry(entryName);
+                    getPlugin().getLoggerController().info("Removing allocated team: " + entryName);
+        }}}
 
-        ArrayList<XoreBoard> xoreBoards = new ArrayList<XoreBoard>(getXoreBoards().values());
-        for(XoreBoard xoreBoard : xoreBoards) removeXoreBoard(xoreBoard);
+        @NotNull ArrayList<XoreBoard> xoreBoards = new ArrayList<XoreBoard>(getXoreBoards().values());
+        for(@NotNull XoreBoard xoreBoard : xoreBoards) removeXoreBoard(xoreBoard);
     }
 
     /**
@@ -197,4 +223,40 @@ public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
 
     private static int getRandomPacketID() {
         return iterator ++;
+    }
+
+    /**
+     * public LogController getLog()
+     * @return LogController
+     */
+
+    public LogController getLog(){
+        return (LogController) this.logController;
+    }
+
+    /**
+     * public LogController getLogController()
+     * @return LogController
+     */
+
+    public LogController getLogController() {
+        return (LogController) this.logController;
+    }
+
+    /**
+     * public LogController getLoggerController()
+     * @return LogController
+     */
+
+    public LogController getLoggerController() {
+        return (LogController) this.loggerController;
+    }
+
+    /**
+     * public static XoreBoardUtil getPlugin()
+     * @return XoreBoardUtil
+     */
+
+    public static XoreBoardUtil getPlugin() {
+        return XoreBoardUtil.getPlugin(XoreBoardUtil.class);
 }}

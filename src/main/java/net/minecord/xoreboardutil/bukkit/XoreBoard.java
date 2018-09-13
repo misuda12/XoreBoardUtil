@@ -19,7 +19,7 @@ public class XoreBoard {
     private HashMap<org.bukkit.entity.Player, XorePlayer> xorePlayers = new HashMap<org.bukkit.entity.Player, XorePlayer>();
     private SharedSidebar sharedSidebar;
 
-    XoreBoard(org.bukkit.scoreboard.Scoreboard scoreboard, @NotNull String ID, @NotNull String name) {
+    XoreBoard(@NotNull org.bukkit.scoreboard.Scoreboard scoreboard, @NotNull String ID, @NotNull String name) {
         this.scoreboard = scoreboard;
         this.ID = ID;
         this.name = name;
@@ -34,7 +34,7 @@ public class XoreBoard {
                 public void run() {
                     getPlayers().stream().filter(player -> player.isOnline() == false).forEach(player -> xorePlayers.remove(player));
         }}.runTaskTimerAsynchronously(XoreBoardUtil.getPlugin(XoreBoardUtil.class), 0L, 20L);
-        XoreBoardUtil.getPlugin(XoreBoardUtil.class).getLogger().info("Creating new scoreboard: " + name);
+        XoreBoardUtil.getPlugin().getLoggerController().info("Creating new scoreboardUID: " + name);
     }}
 
     /**
@@ -42,6 +42,7 @@ public class XoreBoard {
      * @return Scoreboard
      */
 
+    @NotNull
     public final org.bukkit.scoreboard.Scoreboard getScoreboard() {
         return this.scoreboard;
     }
@@ -90,9 +91,8 @@ public class XoreBoard {
         if(this.xorePlayers.containsKey(player)) return;
         XoreBoardUtil.getXoreBoards().forEach((key, xoreBoard) -> {
             if(key.equals(getID()) == false) {
-                if(xoreBoard.getPlayers().contains(player)) {
-                    xoreBoard.removePlayer(player);
-        }}});
+                if(xoreBoard.getPlayers().contains(player)) xoreBoard.removePlayer(player);
+        }});
         player.setScoreboard(this.scoreboard);
         final @NotNull XorePlayer xorePlayer = new XorePlayer(this, player);
 

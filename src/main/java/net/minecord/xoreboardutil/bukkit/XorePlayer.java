@@ -6,6 +6,8 @@ import net.minecord.xoreboardutil.Sidebar;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.logging.Logger;
+
 @Getter
 public class XorePlayer {
 
@@ -31,6 +33,7 @@ public class XorePlayer {
 
     @NotNull
     public PrivateSidebar getPrivateSidebar() {
+        Logger.getLogger("Minecraft").info(getClass().toString() + ":(PRIVATE) " + this.privateSidebar.isShowed());
         return this.privateSidebar;
     }
 

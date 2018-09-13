@@ -1,3 +1,5 @@
 name: XoreBoardUtilTester
 version: ${project.version}
+softdepend:
+- XoreBoardUtil
 main: net.minecord.xoreboardutil.tester.XoreBoardUtilTester
