@@ -107,7 +107,7 @@ public class XoreBoard {
      */
 
     public XorePlayer getPlayer(@NotNull org.bukkit.entity.Player player) {
-        if(this.xorePlayers.containsKey(player) && player != null) return xorePlayers.get(player);
+        if(this.xorePlayers.containsKey(player) && player != null) return this.xorePlayers.get(player);
         else {
             player.setScoreboard(this.scoreboard);
             this.xorePlayers.put(player, new XorePlayer(this, player));
@@ -122,11 +122,11 @@ public class XoreBoard {
     public void removePlayer(@NotNull org.bukkit.entity.Player player) {
         if(player.isOnline() == false || player == null) return;
         if(this.xorePlayers.containsKey(player)) {
-            final XorePlayer xorePlayer = this.xorePlayers.get(player);
-                // hideSidebar(player);
+            final @NotNull XorePlayer xorePlayer = this.xorePlayers.get(player);
+            hideSidebar(player);
 
             this.xorePlayers.remove(player);
-
+            XoreBoardUtil.getPlugin().getLoggerController().debug(this, "removedUID: " + player.getName());
             // player.setScoreboard(org.bukkit.Bukkit.getScoreboardManager().getMainScoreboard());
     }}
 
