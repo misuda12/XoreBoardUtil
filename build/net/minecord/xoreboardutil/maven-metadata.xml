@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
   <groupId>net.minecord</groupId>
-  <artifactId>xoreboardutil.tester</artifactId>
+  <artifactId>xoreboardutil</artifactId>
   <versioning>
     <release>1.13.1</release>
     <versions>
+      <version>1.13</version>
       <version>1.13.1</version>
     </versions>
-    <lastUpdated>20180913120324</lastUpdated>
+    <lastUpdated>20180914155817</lastUpdated>
   </versioning>
 </metadata>

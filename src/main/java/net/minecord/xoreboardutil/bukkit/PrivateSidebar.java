@@ -50,7 +50,7 @@ public class PrivateSidebar implements Sidebar {
     @Override
     public void setDisplayName(@NotNull String displayName) {
         if(getXorePlayer().getPlayer().isOnline() == false) return;
-        String tempDisplayName = (org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName)).length() > 32 ? (org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName)).substring(0, 32) : (org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName));
+        @NotNull String tempDisplayName = (org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName)).length() > 32 ? (org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName)).substring(0, 32) : (org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName));
         if(this.displayName.equals(tempDisplayName)) return;
         if(getXorePlayer().hasShowedShared() == false && isShowed()) sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardObjective", getXorePlayer().getID(), tempDisplayName, XoreBoard.XoreBoardPackets.EnumScoreboardHealthDisplay.INTEGER.toNamespace(), 2));
 
