@@ -2,6 +2,7 @@ package net.minecord.xoreboardutil.bukkit;
 
 import lombok.Getter;
 import net.minecord.xoreboardutil.bukkit.event.XoreBoardCreateEvent;
+import net.minecord.xoreboardutil.bukkit.event.XoreBoardPlayerRemoveEvent;
 import net.minecord.xoreboardutil.bukkit.event.XoreBoardRemoveEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -125,9 +126,11 @@ public class XoreBoard {
             final @NotNull XorePlayer xorePlayer = this.xorePlayers.get(player);
             hideSidebar(player);
 
+            @NotNull final XoreBoardPlayerRemoveEvent event = new XoreBoardPlayerRemoveEvent(this, xorePlayer);
+            XoreBoardUtil.getPlugin(XoreBoardUtil.class).getServer().getPluginManager().callEvent(event);
             this.xorePlayers.remove(player);
-            XoreBoardUtil.getPlugin().getLoggerController().debug(this, "removedUID: " + player.getName());
-            // player.setScoreboard(org.bukkit.Bukkit.getScoreboardManager().getMainScoreboard());
+
+            XoreBoardUtil.getPlugin().getLoggerController().debug(this, getID() + "/removedUID: " + player.getName());
     }}
 
     /**
@@ -138,9 +141,15 @@ public class XoreBoard {
     public void hideSidebar(@NotNull org.bukkit.entity.Player player) {
         if(player.isOnline() == false || player == null) return;
         if(this.xorePlayers.containsKey(player)) {
-            if(getPlayer(player).getPrivateSidebar().isShowed()) this.xorePlayers.get(player).getPrivateSidebar().hideSidebar();
-            if(getPlayer(player).hasShowedShared()) getSharedSidebar().hideSidebar(this.xorePlayers.get(player));
+
+            @NotNull XorePlayer xorePlayer = this.xorePlayers.get(player);
+
+            if(xorePlayer.getPrivateSidebar().isShowed()) xorePlayer.getPrivateSidebar().hideSidebar();
+            if(xorePlayer.hasShowedShared()) getSharedSidebar().hideSidebar(xorePlayer);
     }}
+
+    @Deprecated
+    private void completeUID() {}
 
     /**
      * public SharedSidebar getSidebar()
@@ -197,7 +206,7 @@ public class XoreBoard {
         java.util.List<org.bukkit.entity.Player> temporary = new ArrayList<org.bukkit.entity.Player>(getPlayers());
             temporary.forEach(this::removePlayer);
 
-        final XoreBoardRemoveEvent xoreBoardRemoveEvent = new XoreBoardRemoveEvent(this.getName());
+        final @NotNull XoreBoardRemoveEvent xoreBoardRemoveEvent = new XoreBoardRemoveEvent(this.getName());
         XoreBoardUtil.getPlugin(XoreBoardUtil.class).getServer().getPluginManager().callEvent(xoreBoardRemoveEvent);
     }
 

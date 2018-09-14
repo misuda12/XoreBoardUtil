@@ -63,18 +63,18 @@ public class LogController extends Controller {
      */
 
     public LogController debug(Object instance, @Nullable String message) {
-        log(LogController.Level.DEBUG, instance.getClass().getName().split("\\.")[instance.getClass().getName().split("\\.").length - 1] + message);
+        log(LogController.Level.DEBUG, instance.getClass().getName().split("\\.")[instance.getClass().getName().split("\\.").length - 1] + " " +  message);
         return this;
     }
 
     /**
-     * public LoggerController log(@NotNull LoggerController.Level level, @Nullable String message)
+     * private LoggerController log(@NotNull LoggerController.Level level, @Nullable String message)
      * @param level Level {@link LogController.Level}
      * @param message String {@link String}
      * @return LoggerController
      */
 
-    public LogController log(@NotNull LogController.Level level, @Nullable String message) {
+    private LogController log(@NotNull LogController.Level level, @Nullable String message) {
         getPlugin().getServer().getConsoleSender().sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', level.getPrefix() + (message != null ? message : "null")));
         return this;
     }

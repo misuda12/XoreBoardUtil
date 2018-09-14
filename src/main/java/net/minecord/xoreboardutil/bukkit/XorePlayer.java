@@ -3,6 +3,7 @@ package net.minecord.xoreboardutil.bukkit;
 import lombok.Getter;
 
 import net.minecord.xoreboardutil.Sidebar;
+import net.minecord.xoreboardutil.bukkit.event.XoreBoardPlayerCreateEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,8 +15,7 @@ public class XorePlayer {
     private @NotNull final XoreBoard xoreBoard;
     private @NotNull final org.bukkit.entity.Player player;
 
-    private @Nullable Sidebar previousSidebar;
-    private PrivateSidebar privateSidebar;
+    private @NotNull PrivateSidebar privateSidebar;
 
     private boolean showedSharedSidebar = false;
 
@@ -23,6 +23,8 @@ public class XorePlayer {
         this.xoreBoard = xoreBoard;
         this.player = player;
 
+        @NotNull final XoreBoardPlayerCreateEvent event = new XoreBoardPlayerCreateEvent(getXoreBoard(), this);
+        XoreBoardUtil.getPlugin(XoreBoardUtil.class).getServer().getPluginManager().callEvent(event);
         this.privateSidebar = new PrivateSidebar(getXoreBoard(), this);
     }
 
@@ -33,7 +35,7 @@ public class XorePlayer {
 
     @NotNull
     public PrivateSidebar getPrivateSidebar() {
-        Logger.getLogger("Minecraft").info(getClass().toString() + ":(PRIVATE) " + this.privateSidebar.isShowed());
+        XoreBoardUtil.getPlugin().getLoggerController().debug(this, getXoreBoard().getID() + "/private:" + this.privateSidebar.isShowed());
         return this.privateSidebar;
     }
 
@@ -55,29 +57,8 @@ public class XorePlayer {
     public boolean setShowedSharedSidebar(boolean sharedSidebar) {
         this.showedSharedSidebar = sharedSidebar;
         if(sharedSidebar) getXoreBoard().getSharedSidebar().showSidebar(this);
-        else getXoreBoard().getSharedSidebar().hideSidebar(this);
+            else getXoreBoard().getSharedSidebar().hideSidebar(this);
         return this.showedSharedSidebar;
-    }
-
-    /**
-     * public Sidebar getPreviousSidebar()
-     * @return Sidebar
-     */
-
-    @Nullable
-    @Deprecated
-    public Sidebar getPreviousSidebar() {
-        return this.previousSidebar;
-    }
-
-    /**
-     * public void setPreviousSidebar(@NotNull Sidebar previousSidebar)
-     * @param previousSidebar Sidebar {@link Sidebar {@value previousSidebar}}
-     */
-
-    @Deprecated
-    public void setPreviousSidebar(@NotNull Sidebar previousSidebar) {
-        this.previousSidebar = previousSidebar;
     }
 
     /**
@@ -98,7 +79,7 @@ public class XorePlayer {
     @NotNull
     @org.jetbrains.annotations.Contract(pure = true)
     public String getID() {
-        return getXoreBoard().getID() + ":" + getPlayer().getEntityId();
+        return getXoreBoard().getID() + "@" + getPlayer().getUniqueId();
     }
 
     /**

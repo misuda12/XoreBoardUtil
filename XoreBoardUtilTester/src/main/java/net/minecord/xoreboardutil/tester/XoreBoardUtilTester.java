@@ -7,7 +7,6 @@ import net.minecord.xoreboardutil.bukkit.event.XoreBoardSendPacketEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
-import java.util.logging.Level;
 
 @Getter
 public final class XoreBoardUtilTester extends org.bukkit.plugin.java.JavaPlugin implements org.bukkit.event.Listener {
@@ -35,6 +34,11 @@ public final class XoreBoardUtilTester extends org.bukkit.plugin.java.JavaPlugin
     }
 
     @org.bukkit.event.EventHandler
-    public void packet(@NotNull final XoreBoardSendPacketEvent event) {
-        getLogger().log(Level.CONFIG, event.getPacketObject().toString());
+    public void on(@NotNull final org.bukkit.event.player.PlayerQuitEvent event) {
+        getLogger().info("online=" + event.getPlayer().isOnline());
+    }
+
+    @org.bukkit.event.EventHandler
+    public void on(@NotNull final XoreBoardSendPacketEvent event) {
+        getLogger().info("packet=" + event.getPacketObject().toString());
 }}
