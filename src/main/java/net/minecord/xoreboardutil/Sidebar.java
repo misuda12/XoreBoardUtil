@@ -113,13 +113,13 @@ public interface Sidebar {
     SidebarType getType();
 
     /**
-     * default Object prepareFormattedVanillaPacket(@NotNull String packetName, Object... objects)
+     * default Object prepareVanillaPacket(@NotNull String packetName, boolean removeID, Object... objects)
      * @param packetName String {@link String}
      * @param objects Object... {@link Object}
      * @return Object
      */
 
-    default Object prepareFormattedVanillaPacket(@NotNull String packetName, Object... objects) {
+    default Object prepareVanillaPacket(@NotNull String packetName, Object... objects) {
         int objectIndex = 0;
         Object outputObject = null;
         try {
@@ -135,14 +135,14 @@ public interface Sidebar {
     }
 
     /**
-     * default Object prepareVanillaPacket(@NotNull String packetName, boolean removeID, Object... objects)
+     * default Object prepareFormattedVanillaPacket(@NotNull String packetName, Object... objects)
      * @param packetName String {@link String}
      * @param removeID boolean {@link Boolean}
      * @param objects Object... {@link Object}
      * @return Object
      */
 
-    default Object prepareVanillaPacket(@NotNull String packetName, boolean removeID, Object... objects) {
+    default Object prepareFormattedVanillaPacket(@NotNull String packetName, boolean removeID, Object... objects) {
         int objectIndex = 0;
         Object outputObject = null;
         try {

@@ -31,7 +31,6 @@ public class XorePlayer {
 
     @NotNull
     public PrivateSidebar getPrivateSidebar() {
-        XoreBoardUtil.getPlugin().getLoggerController().debug(this, getXoreBoard().getID() + "/private:" + this.privateSidebar.isShowed());
         return this.privateSidebar;
     }
 

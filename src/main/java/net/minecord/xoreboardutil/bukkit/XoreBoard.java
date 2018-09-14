@@ -102,11 +102,6 @@ public class XoreBoard implements org.bukkit.event.Listener {
     public void addPlayer(@NotNull org.bukkit.entity.Player player) {
         if(player.isOnline() == false || player == null) return;
         if(this.xorePlayers.containsKey(player)) return;
-        XoreBoardUtil.getXoreBoards().forEach((key, xoreBoard) -> {
-            if(key.equals(getID()) == false) {
-                XoreBoardUtil.getPlugin(XoreBoardUtil.class).getLoggerController().info("Player '" + player.getName() + "' is in another xoreBoard ... switching");
-                if(xoreBoard.getPlayers().contains(player)) xoreBoard.removePlayer(player);
-        }});
         player.setScoreboard(this.scoreboard);
         final @NotNull XorePlayer xorePlayer = new XorePlayer(this, player);
 

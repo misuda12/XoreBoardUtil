@@ -42,7 +42,7 @@ public class PrivateSidebar implements Sidebar {
         if(getXorePlayer().getPlayer().isOnline() == false || getXorePlayer() == null || getXorePlayer().getPlayer() == null) return;
         @NotNull String tempDisplayName = org.apache.commons.lang3.StringUtils.substring(org.bukkit.ChatColor.translateAlternateColorCodes('&', displayName), 32);
         if(this.displayName.equals(tempDisplayName)) return;
-        if(getXorePlayer().hasShowedShared() == false && isShowed()) sendPacket(getXorePlayer(), prepareFormattedVanillaPacket("PacketPlayOutScoreboardObjective", getXorePlayer().getID(), tempDisplayName, XoreBoard.XoreBoardPackets.EnumScoreboardHealthDisplay.INTEGER.toNamespace(), 2));
+        if(getXorePlayer().hasShowedShared() == false && isShowed()) sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardObjective", getXorePlayer().getID(), tempDisplayName, XoreBoard.XoreBoardPackets.EnumScoreboardHealthDisplay.INTEGER.toNamespace(), 2));
 
         this.displayName = tempDisplayName;
     }
@@ -50,7 +50,7 @@ public class PrivateSidebar implements Sidebar {
     @Override
     public void putLine(@NotNull String lineKey, int value) {
         if(getXorePlayer().getPlayer().isOnline() == false || getXorePlayer() == null || getXorePlayer().getPlayer() == null) return;
-        if(getXorePlayer().hasShowedShared() == false && isShowed()) sendPacket(getXorePlayer(), prepareFormattedVanillaPacket("PacketPlayOutScoreboardScore", org.apache.commons.lang3.StringUtils.substring(org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey), 48), getXorePlayer().getID(), value, XoreBoard.XoreBoardPackets.EnumScoreboardAction.CHANGE.toNamespace()));
+        if(getXorePlayer().hasShowedShared() == false && isShowed()) sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardScore", org.apache.commons.lang3.StringUtils.substring(org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey), 48), getXorePlayer().getID(), value, XoreBoard.XoreBoardPackets.EnumScoreboardAction.CHANGE.toNamespace()));
         this.lineKeys.put(lineKey, value);
     }
 
@@ -65,7 +65,7 @@ public class PrivateSidebar implements Sidebar {
         this.lineKeys.forEach((lineKey, value) -> {
             if(lineKeys.containsKey(lineKey) && lineKeys.get(lineKey).equals(value)) lineKeys.remove(lineKey);
         });
-        if(getXorePlayer().hasShowedShared() == false && isShowed()) lineKeys.forEach((lineKey, value) -> sendPacket(getXorePlayer(), prepareFormattedVanillaPacket("PacketPlayOutScoreboardScore", org.apache.commons.lang3.StringUtils.substring(org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey), 48), getXorePlayer().getID(), value, XoreBoard.XoreBoardPackets.EnumScoreboardAction.CHANGE.toNamespace())));
+        if(getXorePlayer().hasShowedShared() == false && isShowed()) lineKeys.forEach((lineKey, value) -> sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardScore", org.apache.commons.lang3.StringUtils.substring(org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey), 48), getXorePlayer().getID(), value, XoreBoard.XoreBoardPackets.EnumScoreboardAction.CHANGE.toNamespace())));
         this.lineKeys.putAll(lineKeys);
     }
 
@@ -99,14 +99,14 @@ public class PrivateSidebar implements Sidebar {
     public void clearLine(@NotNull String lineKey) {
         if(getXorePlayer().getPlayer().isOnline() == false || getXorePlayer() == null || getXorePlayer().getPlayer() == null) return;
         if(this.lineKeys.containsKey(lineKey)) {
-            if(getXorePlayer().hasShowedShared() == false && isShowed()) sendPacket(getXorePlayer(), prepareFormattedVanillaPacket("PacketPlayOutScoreboardScore", org.apache.commons.lang3.StringUtils.substring(org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey), 48), getXorePlayer().getID(), 0, XoreBoard.XoreBoardPackets.EnumScoreboardAction.REMOVE.toNamespace()));
+            if(getXorePlayer().hasShowedShared() == false && isShowed()) sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardScore", org.apache.commons.lang3.StringUtils.substring(org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey), 48), getXorePlayer().getID(), 0, XoreBoard.XoreBoardPackets.EnumScoreboardAction.REMOVE.toNamespace()));
     }}
 
     @Override
     public void clearLines() {
         if(getXorePlayer().getPlayer().isOnline() == false || getXorePlayer() == null || getXorePlayer().getPlayer() == null) return;
         if(getXorePlayer().hasShowedShared() == false && isShowed()) {
-            sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardObjective", true,getXorePlayer().getID(), null, null, 1));
+            sendPacket(getXorePlayer(), prepareFormattedVanillaPacket("PacketPlayOutScoreboardObjective", true,getXorePlayer().getID(), null, null, 1));
 
             this.showedStatus = false;
         }
@@ -117,7 +117,7 @@ public class PrivateSidebar implements Sidebar {
     public void hideSidebar() {
         if(getXorePlayer().getPlayer().isOnline() == false || getXorePlayer() == null || getXorePlayer().getPlayer() == null || getLines().isEmpty()) return;
         if(getXorePlayer().hasShowedShared() == false && isShowed()) {
-            sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardObjective", true,getXorePlayer().getID(), null, null, 1));
+            sendPacket(getXorePlayer(), prepareFormattedVanillaPacket("PacketPlayOutScoreboardObjective", true,getXorePlayer().getID(), null, null, 1));
 
             this.showedStatus = false;
     }}
@@ -128,9 +128,9 @@ public class PrivateSidebar implements Sidebar {
         if(getXorePlayer().hasShowedShared()) getXoreBoard().getSharedSidebar().hideSidebar(getXorePlayer());
         if(getXorePlayer().hasShowedShared() == false && isShowed() == false) {
             org.bukkit.Bukkit.getScheduler().runTaskAsynchronously(XoreBoardUtil.getPlugin(XoreBoardUtil.class), () -> {
-                sendPacket(getXorePlayer(), prepareFormattedVanillaPacket("PacketPlayOutScoreboardObjective", getXorePlayer().getID(), this.displayName, XoreBoard.XoreBoardPackets.EnumScoreboardHealthDisplay.INTEGER.toNamespace(), 0));
-                    sendPacket(getXorePlayer(), prepareFormattedVanillaPacket("PacketPlayOutScoreboardDisplayObjective", 1, getXorePlayer().getID()));
-                        this.lineKeys.forEach((lineKey, value) -> sendPacket(getXorePlayer(), prepareFormattedVanillaPacket("PacketPlayOutScoreboardScore", org.apache.commons.lang3.StringUtils.substring(org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey), 48), getXorePlayer().getID(), value, XoreBoard.XoreBoardPackets.EnumScoreboardAction.CHANGE.toNamespace())));
+                sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardObjective", getXorePlayer().getID(), this.displayName, XoreBoard.XoreBoardPackets.EnumScoreboardHealthDisplay.INTEGER.toNamespace(), 0));
+                    sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardDisplayObjective", 1, getXorePlayer().getID()));
+                        this.lineKeys.forEach((lineKey, value) -> sendPacket(getXorePlayer(), prepareVanillaPacket("PacketPlayOutScoreboardScore", org.apache.commons.lang3.StringUtils.substring(org.bukkit.ChatColor.translateAlternateColorCodes('&', lineKey), 48), getXorePlayer().getID(), value, XoreBoard.XoreBoardPackets.EnumScoreboardAction.CHANGE.toNamespace())));
             });
 
             this.showedStatus = true;
