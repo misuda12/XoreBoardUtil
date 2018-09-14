@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/XoreBoardUtil.iml" filepath="$PROJECT_DIR$/XoreBoardUtil.iml" />
-      <module fileurl="file://$PROJECT_DIR$/XoreBoardUtilTester/XoreBoardUtilTester.iml" filepath="$PROJECT_DIR$/XoreBoardUtilTester/XoreBoardUtilTester.iml" />
+      <module fileurl="file://$PROJECT_DIR$/XoreBoardUtilTester/xoreboardutil.tester.iml" filepath="$PROJECT_DIR$/XoreBoardUtilTester/xoreboardutil.tester.iml" />
     </modules>
   </component>
 </project>
