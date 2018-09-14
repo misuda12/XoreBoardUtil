@@ -83,9 +83,7 @@ public interface Sidebar {
      * @param lineKeys HashMap {@link java.util.HashMap}
      */
 
-    default void rewriteLines(java.util.HashMap<String, Integer> lineKeys) {
-        setLines(lineKeys);
-    }
+    void rewriteLines(java.util.HashMap<String, Integer> lineKeys);
 
     /**
      * void clearLine(@org.jetbrains.annotations.NotNull String lineKey)
@@ -115,22 +113,44 @@ public interface Sidebar {
     SidebarType getType();
 
     /**
-     * default Object prepareVanillaPacket(@NotNull String packetName, Object... objects)
+     * default Object prepareFormattedVanillaPacket(@NotNull String packetName, Object... objects)
      * @param packetName String {@link String}
      * @param objects Object... {@link Object}
      * @return Object
      */
 
-    default Object prepareVanillaPacket(@NotNull String packetName, Object... objects) {
+    default Object prepareFormattedVanillaPacket(@NotNull String packetName, Object... objects) {
         int objectIndex = 0;
         Object outputObject = null;
         try {
             outputObject = Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + "." + packetName).newInstance();
             for(@NotNull Field field : getDeclaredFields(Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + "." + packetName))) {
-                if(field.getType().getName().contains("IChatBaseComponent") || field.getType().getName().endsWith("IChatBaseComponent")) rewriteField(outputObject, field.getName(), IChatBaseComponentConverter.toIChatBaseComponent((String) objects[objectIndex]));
-                else rewriteField(outputObject, field.getName(), objects[objectIndex]);
+                if(objects.length == 4 && objects[3] instanceof Integer && objects[3].equals(1)) continue;
+                else {
+                    if(field.getType().getName().contains("IChatBaseComponent") || field.getType().getName().endsWith("IChatBaseComponent")) rewriteField(outputObject, field.getName(), IChatBaseComponentConverter.toIChatBaseComponent((String) objects[objectIndex]));
+                    else rewriteField(outputObject, field.getName(), objects[objectIndex]);
+                        objectIndex++;
+        }}} catch(@NotNull final NullPointerException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException ignored) {}
+        return outputObject;
+    }
+
+    /**
+     * default Object prepareVanillaPacket(@NotNull String packetName, boolean removeID, Object... objects)
+     * @param packetName String {@link String}
+     * @param removeID boolean {@link Boolean}
+     * @param objects Object... {@link Object}
+     * @return Object
+     */
+
+    default Object prepareVanillaPacket(@NotNull String packetName, boolean removeID, Object... objects) {
+        int objectIndex = 0;
+        Object outputObject = null;
+        try {
+            outputObject = Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + "." + packetName).newInstance();
+            for(@NotNull Field field : getDeclaredFields(Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + "." + packetName))) {
+                rewriteField(outputObject, field.getName(), objects[objectIndex]);
                     objectIndex++;
-        }} catch(@NotNull final ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException ignored) {}
+        }} catch(@NotNull final NullPointerException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException ignored) {}
         return outputObject;
     }
 
@@ -238,12 +258,12 @@ public interface Sidebar {
     class IChatBaseComponentConverter {
         public static Object toIChatBaseComponent(@NotNull String message) {
             try {
-                if(message == null) XoreBoardUtil.getPlugin().getLoggerController().error("Couldn't convert 'null' string to ICHatBaseComponent");
+                if(message == null) XoreBoardUtil.getPlugin().getLoggerController().error("Couldn't convert 'null' string to IChatBaseComponent");
                 Method method = Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + ".IChatBaseComponent$ChatSerializer").getDeclaredMethod("a", String.class);
                 method.setAccessible(true);
                 return method.invoke(null, "{\"text\":\"" + org.bukkit.ChatColor.translateAlternateColorCodes('&', message) + "\"}");
             }
             catch(final @NotNull Throwable ignored) {}
-            XoreBoardUtil.getPlugin().getLoggerController().error("Couldn't convert string to ICHatBaseComponent");
+            XoreBoardUtil.getPlugin().getLoggerController().error("Couldn't convert string to IChatBaseComponent");
             return null;
 }}}

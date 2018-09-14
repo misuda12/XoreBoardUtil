@@ -18,7 +18,7 @@ public final class XoreBoardUtilTester extends org.bukkit.plugin.java.JavaPlugin
         this.xoreBoard = XoreBoardUtil.getNextXoreBoard();
         getServer().getPluginManager().registerEvents(this, this);
         @NotNull String defaultTitle = this.xoreBoard.setDefaultTitle("${project.name}");
-        getLogger().info("connected=" + getServer().getOnlinePlayers().size() + 1 + ";adding=0;created=0");
+        getLogger().info("connected=" + (getServer().getOnlinePlayers().size()) + ";adding=0;created=0");
     }
 
     @org.bukkit.event.EventHandler
@@ -29,8 +29,8 @@ public final class XoreBoardUtilTester extends org.bukkit.plugin.java.JavaPlugin
         lines.put("packetID: " + this.xoreBoard.getPlayer(event.getPlayer()).getID(), 1);
             lines.put("name: " + event.getPlayer().getName(), 2);
                 lines.put("pID: " + event.getPlayer().getEntityId(), 3);
-        this.xoreBoard.getSharedSidebar().putLines(lines);
-        this.xoreBoard.getSharedSidebar().showSidebar();
+        this.xoreBoard.getPrivateSidebar(event.getPlayer()).putLines(lines);
+        this.xoreBoard.getPrivateSidebar(event.getPlayer()).showSidebar();
     }
 
     @org.bukkit.event.EventHandler

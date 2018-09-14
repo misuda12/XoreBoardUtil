@@ -12,12 +12,12 @@ import java.util.Collection;
 import java.util.HashMap;
 
 @Getter
-public class XoreBoard {
+public class XoreBoard implements org.bukkit.event.Listener {
 
     private final @NotNull org.bukkit.scoreboard.Scoreboard scoreboard;
     private @NotNull String ID, name;
 
-    private HashMap<org.bukkit.entity.Player, XorePlayer> xorePlayers = new HashMap<org.bukkit.entity.Player, XorePlayer>();
+    private @NotNull HashMap<org.bukkit.entity.Player, XorePlayer> xorePlayers = new HashMap<org.bukkit.entity.Player, XorePlayer>();
     private SharedSidebar sharedSidebar;
 
     XoreBoard(@NotNull org.bukkit.scoreboard.Scoreboard scoreboard, @NotNull String ID, @NotNull String name) {
@@ -27,6 +27,7 @@ public class XoreBoard {
 
         final @NotNull XoreBoardCreateEvent xoreBoardCreateEvent = new XoreBoardCreateEvent(this);
         XoreBoardUtil.getPlugin(XoreBoardUtil.class).getServer().getPluginManager().callEvent(xoreBoardCreateEvent);
+            XoreBoardUtil.getPlugin(XoreBoardUtil.class).getServer().getPluginManager().registerEvents(this, XoreBoardUtil.getPlugin(XoreBoardUtil.class));
 
         if(getEntries() != null && this.xorePlayers.size() > 0) {
             new org.bukkit.scheduler.BukkitRunnable() {
@@ -34,9 +35,20 @@ public class XoreBoard {
                 @Override
                 public void run() {
                     getPlayers().stream().filter(player -> player.isOnline() == false).forEach(player -> xorePlayers.remove(player));
-        }}.runTaskTimerAsynchronously(XoreBoardUtil.getPlugin(XoreBoardUtil.class), 0L, 20L);
-        XoreBoardUtil.getPlugin().getLoggerController().info("Creating new scoreboardUID: " + name);
-    }}
+            }}.runTaskTimerAsynchronously(XoreBoardUtil.getPlugin(XoreBoardUtil.class), 0L, 20L);
+            XoreBoardUtil.getPlugin().getLoggerController().info("Creating new scoreboardUID: " + name);
+        }
+        this.sharedSidebar = new SharedSidebar(this);
+    }
+
+    @org.bukkit.event.EventHandler(priority = org.bukkit.event.EventPriority.HIGHEST)
+    public void on(final @NotNull org.bukkit.event.player.PlayerQuitEvent event) {
+
+        @NotNull final XoreBoardPlayerRemoveEvent xoreBoardPlayerRemoveEvent = new XoreBoardPlayerRemoveEvent(this, this.xorePlayers.get(event.getPlayer()));
+        XoreBoardUtil.getPlugin(XoreBoardUtil.class).getServer().getPluginManager().callEvent(event);
+            XoreBoardUtil.getPlugin().getLoggerController().debug(this, getID() + "/removedUID: " + event.getPlayer().getName());
+        this.xorePlayers.remove(event.getPlayer());
+    }
 
     /**
      * public final org.bukkit.scoreboard.Scoreboard getScoreboard()
@@ -92,6 +104,7 @@ public class XoreBoard {
         if(this.xorePlayers.containsKey(player)) return;
         XoreBoardUtil.getXoreBoards().forEach((key, xoreBoard) -> {
             if(key.equals(getID()) == false) {
+                XoreBoardUtil.getPlugin(XoreBoardUtil.class).getLoggerController().info("Player '" + player.getName() + "' is in another xoreBoard ... switching");
                 if(xoreBoard.getPlayers().contains(player)) xoreBoard.removePlayer(player);
         }});
         player.setScoreboard(this.scoreboard);
@@ -108,7 +121,7 @@ public class XoreBoard {
      */
 
     public XorePlayer getPlayer(@NotNull org.bukkit.entity.Player player) {
-        if(this.xorePlayers.containsKey(player) && player != null) return this.xorePlayers.get(player);
+        if(this.xorePlayers.containsKey(player) && player != null && player.isOnline()) return this.xorePlayers.get(player);
         else {
             player.setScoreboard(this.scoreboard);
             this.xorePlayers.put(player, new XorePlayer(this, player));
@@ -157,8 +170,7 @@ public class XoreBoard {
      */
 
     public SharedSidebar getSharedSidebar() {
-        if(this.sharedSidebar == null) this.sharedSidebar = new SharedSidebar(this);
-        return ((SharedSidebar) this.sharedSidebar);
+        return this.sharedSidebar;
     }
 
     /**
@@ -203,11 +215,14 @@ public class XoreBoard {
 
     public void destroy() {
         getSharedSidebar().clearLines();
-        java.util.List<org.bukkit.entity.Player> temporary = new ArrayList<org.bukkit.entity.Player>(getPlayers());
+        @NotNull java.util.List<org.bukkit.entity.Player> temporary = new ArrayList<org.bukkit.entity.Player>(getPlayers());
             temporary.forEach(this::removePlayer);
 
         final @NotNull XoreBoardRemoveEvent xoreBoardRemoveEvent = new XoreBoardRemoveEvent(this.getName());
         XoreBoardUtil.getPlugin(XoreBoardUtil.class).getServer().getPluginManager().callEvent(xoreBoardRemoveEvent);
+
+        org.bukkit.event.HandlerList.unregisterAll(this);
+        java.lang.Runtime.getRuntime().gc();
     }
 
     @Getter

@@ -2,12 +2,8 @@ package net.minecord.xoreboardutil.bukkit;
 
 import lombok.Getter;
 
-import net.minecord.xoreboardutil.Sidebar;
 import net.minecord.xoreboardutil.bukkit.event.XoreBoardPlayerCreateEvent;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.logging.Logger;
 
 @Getter
 public class XorePlayer {
@@ -79,7 +75,7 @@ public class XorePlayer {
     @NotNull
     @org.jetbrains.annotations.Contract(pure = true)
     public String getID() {
-        return getXoreBoard().getID() + "@" + getPlayer().getUniqueId();
+        return getXoreBoard().getID() + "@" + getPlayer().getEntityId();
     }
 
     /**

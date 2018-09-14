@@ -1,5 +1,6 @@
 package net.minecord.xoreboardutil.bukkit;
 
+import net.minecord.xoreboardutil.PostConstruct;
 import net.minecord.xoreboardutil.bukkit.controller.Controller;
 import net.minecord.xoreboardutil.bukkit.controller.LogController;
 import org.jetbrains.annotations.NotNull;
@@ -102,7 +103,7 @@ public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
 
     public static void removeXoreBoard(@NotNull String boardName) {
         if(xoreBoards.containsKey(boardName) == false) return;
-        getPlugin().getLoggerController().info("Removing XoreBoard: " + boardName);
+        getPlugin().getLoggerController().info("Removing allocated XoreBoard: " + boardName);
                 getXoreBoard(boardName).destroy();
         xoreBoards.remove(boardName);
     }
@@ -113,7 +114,11 @@ public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
      */
 
     public static void removeXoreBoard(@NotNull XoreBoard xoreBoard) {
-        if(xoreBoard != null) removeXoreBoard(xoreBoard.getName());
+        if(xoreBoards.containsKey(xoreBoard.getName()) == false) return;
+        getPlugin().getLoggerController().info("Removing allocated XoreBoard: " + xoreBoard.getName());
+        xoreBoards.remove(xoreBoard.getName());
+
+        xoreBoard.destroy();
     }
 
     /**

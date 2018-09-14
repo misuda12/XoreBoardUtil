@@ -1,4 +1,4 @@
-package net.minecord.xoreboardutil.bukkit;
+package net.minecord.xoreboardutil;
 
 import java.lang.annotation.*;
 
