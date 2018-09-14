@@ -10,14 +10,16 @@ public class XorePlayer {
 
     private @NotNull final XoreBoard xoreBoard;
     private @NotNull final org.bukkit.entity.Player player;
+    private @NotNull final String ID;
 
     private @NotNull PrivateSidebar privateSidebar;
 
     private boolean showedSharedSidebar = false;
 
-    XorePlayer(@NotNull XoreBoard xoreBoard, @NotNull org.bukkit.entity.Player player) {
+    XorePlayer(@NotNull XoreBoard xoreBoard, @NotNull org.bukkit.entity.Player player, int ID) {
         this.xoreBoard = xoreBoard;
         this.player = player;
+        this.ID = getXoreBoard().getID() + "@" + ID;
 
         @NotNull final XoreBoardPlayerCreateEvent event = new XoreBoardPlayerCreateEvent(getXoreBoard(), this);
         XoreBoardUtil.getPlugin(XoreBoardUtil.class).getServer().getPluginManager().callEvent(event);
@@ -74,7 +76,7 @@ public class XorePlayer {
     @NotNull
     @org.jetbrains.annotations.Contract(pure = true)
     public String getID() {
-        return getXoreBoard().getID() + "@" + getPlayer().getEntityId();
+        return this.ID;
     }
 
     /**

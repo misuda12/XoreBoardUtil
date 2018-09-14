@@ -3,6 +3,7 @@ package net.minecord.xoreboardutil.bukkit;
 import net.minecord.xoreboardutil.PostConstruct;
 import net.minecord.xoreboardutil.bukkit.controller.Controller;
 import net.minecord.xoreboardutil.bukkit.controller.LogController;
+import net.minecord.xoreboardutil.bukkit.event.XoreBoardPlayerRemoveEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,7 +12,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 @lombok.Generated
-public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
+public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin implements org.bukkit.event.Listener {
 
     @org.jetbrains.annotations.TestOnly
     private static @NotNull HashMap<String, XoreBoard> xoreBoards = new HashMap<String, XoreBoard>();
@@ -20,8 +21,9 @@ public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
     private static @NotNull org.bukkit.scoreboard.Scoreboard scoreboard;
     private static org.bukkit.scoreboard.Team.OptionStatus nameTag, collisions;
 
-    private static int name, iterator, randomInt = 0;
-    private static @NotNull Random random = new Random();
+    private static int name, iterator = 0;
+
+    private static Random random = new Random();
 
     private @Nullable Controller logController = new LogController(this), loggerController = logController, log = logController;
 
@@ -37,8 +39,10 @@ public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
      */
 
     private void continueEnabling(@NotNull XoreBoardUtil plugin) {
-        randomInt = random.nextInt(100);
+
         scoreboard = org.bukkit.Bukkit.getScoreboardManager().getMainScoreboard();
+
+        getServer().getPluginManager().registerEvents(this, this);
         getLoggerController().info("Successfully enabled/initialized plugin instance");
     }
 
@@ -49,6 +53,18 @@ public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
         java.lang.Runtime.getRuntime().gc();
         getLoggerController().info("Plugin has been successfully disabled");
     }
+
+    @org.bukkit.event.EventHandler
+    public void on(final @NotNull org.bukkit.event.player.PlayerQuitEvent event) {
+        for(@NotNull XoreBoard xoreBoard : XoreBoardUtil.getXoreBoards().values()) {
+            if(xoreBoard.getPlayers().contains(event.getPlayer()) == false) continue;
+            @NotNull XorePlayer xorePlayer = xoreBoard.getPlayer(event.getPlayer());
+
+            @NotNull XoreBoardPlayerRemoveEvent xoreBoardPlayerRemoveEvent = new XoreBoardPlayerRemoveEvent(xoreBoard, xorePlayer);
+            getServer().getPluginManager().callEvent(xoreBoardPlayerRemoveEvent);
+
+            xoreBoard.getPlayers().remove(event.getPlayer());
+    }}
 
     /**
      * public static XoreBoard getXoreBoard()
@@ -92,7 +108,7 @@ public class XoreBoardUtil extends org.bukkit.plugin.java.JavaPlugin {
     public static XoreBoard createXoreBoard(@NotNull String boardName) {
         if(xoreBoards.containsKey(boardName)) return xoreBoards.get(boardName);
         else {
-            xoreBoards.put(boardName, new XoreBoard(scoreboard, randomInt + "." + getRandomPacketID(), boardName));
+            xoreBoards.put(boardName, new XoreBoard(scoreboard, random.nextInt(100) + "." + getRandomPacketID(), boardName));
             return xoreBoards.get(boardName);
     }}
 

@@ -125,12 +125,10 @@ public interface Sidebar {
         try {
             outputObject = Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + "." + packetName).newInstance();
             for(@NotNull Field field : getDeclaredFields(Class.forName("net.minecraft.server." + org.bukkit.Bukkit.getServer().getClass().getPackage().getName().substring(org.bukkit.Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1) + "." + packetName))) {
-                if(objects.length == 4 && objects[3] instanceof Integer && objects[3].equals(1)) continue;
-                else {
-                    if(field.getType().getName().contains("IChatBaseComponent") || field.getType().getName().endsWith("IChatBaseComponent")) rewriteField(outputObject, field.getName(), IChatBaseComponentConverter.toIChatBaseComponent((String) objects[objectIndex]));
-                    else rewriteField(outputObject, field.getName(), objects[objectIndex]);
-                        objectIndex++;
-        }}} catch(@NotNull final NullPointerException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException ignored) {}
+                if(field.getType().getName().contains("IChatBaseComponent") || field.getType().getName().endsWith("IChatBaseComponent")) rewriteField(outputObject, field.getName(), IChatBaseComponentConverter.toIChatBaseComponent((String) objects[objectIndex]));
+                else rewriteField(outputObject, field.getName(), objects[objectIndex]);
+                    objectIndex++;
+        }} catch(@NotNull final NullPointerException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException ignored) {}
         return outputObject;
     }
 
