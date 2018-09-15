@@ -53,8 +53,8 @@ public class XorePlayer {
 
     public boolean setShowedSharedSidebar(boolean sharedSidebar) {
         this.showedSharedSidebar = sharedSidebar;
-        if(sharedSidebar) getXoreBoard().getSharedSidebar().showSidebar(this);
-            else getXoreBoard().getSharedSidebar().hideSidebar(this);
+        if(sharedSidebar) getPrivateSidebar().hideSidebar();
+
         return this.showedSharedSidebar;
     }
 

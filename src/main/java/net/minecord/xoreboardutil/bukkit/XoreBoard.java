@@ -35,8 +35,8 @@ public class XoreBoard {
                 public void run() {
                     getPlayers().stream().filter(player -> player.isOnline() == false).forEach(player -> xorePlayers.remove(player));
             }}.runTaskTimerAsynchronously(XoreBoardUtil.getPlugin(XoreBoardUtil.class), 0L, 20L);
-            XoreBoardUtil.getPlugin().getLoggerController().info("Creating new scoreboardUID: " + name);
         }
+        XoreBoardUtil.getPlugin().getLoggerController().info("Creating new scoreboardUID: " + name);
         this.sharedSidebar = new SharedSidebar(this);
     }
 
@@ -153,6 +153,16 @@ public class XoreBoard {
 
     public SharedSidebar getSharedSidebar() {
         return this.sharedSidebar;
+    }
+
+    /**
+     * public PrivateSidebar getPrivateSidebar(@NotNull XorePlayer xorePlayer)
+     * @param xorePlayer XorePlayer {@link XorePlayer}
+     * @return PrivateSidebar
+     */
+
+    public PrivateSidebar getPrivateSidebar(@NotNull XorePlayer xorePlayer) {
+        return xorePlayer.getPrivateSidebar();
     }
 
     /**

@@ -85,7 +85,7 @@ public class SharedSidebar implements Sidebar {
         });
 
         lineKeys.forEach((lineKey, lineValue) -> {
-            if(lineKeys.containsKey(lineKey) == false) putLine(lineKey, lineValue);
+            if(this.lineKeys.containsKey(lineKey) == false) putLine(lineKey, lineValue);
         });
     }
 
